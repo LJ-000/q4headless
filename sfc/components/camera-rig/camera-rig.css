@@ -1,0 +1,32 @@
+/* camera-rig: reads only --sfc-* theme variables. The root is the viewport; the stage is the world
+   plane, drawn through one transform written by the camera. Give the root a size (a hero, a slide, a
+   1920x1080 scene). The stage keeps its natural layout size and is centred in the root. */
+
+[data-sfc="camera-rig"] {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--sfc-bg);
+  color: var(--sfc-ink);
+}
+
+/* Origin top-left: the camera's matrix is written in stage pixels. No will-change: a promoted layer
+   under a zoom renders text blurry. */
+[data-sfc="camera-rig"] > .sfc-stage {
+  position: relative;
+  grid-area: 1 / 1;
+  transform-origin: 0 0;
+}
+
+/* The far lattice: a field of tiny hard-edged dots three viewports wide, behind the stage, so camera
+   moves read on empty ground. Each dot is a 1.5 px disc with no soft falloff: texture, not a glow. */
+[data-sfc="camera-rig"] > .sfc-camera-lattice {
+  position: absolute;
+  inset: -100%;
+  transform-origin: 0 0;
+  pointer-events: none;
+  opacity: 0.8;
+  background-image: radial-gradient(circle at center, var(--sfc-surface-border) 1.5px, transparent 1.6px);
+  background-size: 40px 40px;
+}

@@ -1,0 +1,84 @@
+{
+  "packedAt": "2026-11-11T15:08:57.162Z",
+  "theme": "brand-central",
+  "components": [
+    {
+      "id": "camera-rig",
+      "version": "0.1.0"
+    },
+    {
+      "id": "one-take",
+      "version": "0.1.0"
+    },
+    {
+      "id": "form-frame",
+      "version": "0.1.0"
+    },
+    {
+      "id": "carry",
+      "version": "0.1.0"
+    },
+    {
+      "id": "kinetic-type",
+      "version": "0.1.0"
+    },
+    {
+      "id": "text-reveal",
+      "version": "0.1.0"
+    },
+    {
+      "id": "chart-donut",
+      "version": "0.1.0"
+    },
+    {
+      "id": "bento-grid",
+      "version": "0.1.0"
+    },
+    {
+      "id": "border-beam",
+      "version": "0.1.0"
+    },
+    {
+      "id": "device-frame",
+      "version": "0.1.0"
+    },
+    {
+      "id": "chart-area",
+      "version": "0.1.0"
+    },
+    {
+      "id": "arch-flow",
+      "version": "0.1.0"
+    },
+    {
+      "id": "agent-chat",
+      "version": "0.1.0"
+    }
+  ],
+  "vendor": {
+    "gsap": {
+      "version": "3.14.2",
+      "license": "GreenSock Standard 'no charge' license",
+      "files": {
+        "gsap.min.js": "gsap/dist/gsap.min.js",
+        "ScrollTrigger.min.js": "gsap/dist/ScrollTrigger.min.js",
+        "SplitText.min.js": "gsap/dist/SplitText.min.js",
+        "Flip.min.js": "gsap/dist/Flip.min.js"
+      }
+    },
+    "ogl": {
+      "version": "1.0.11",
+      "license": "Unlicense",
+      "files": {
+        "ogl.mjs": "ogl/src/index.js, bundled with esbuild 0.25.10"
+      }
+    },
+    "axe-core": {
+      "version": "4.14.0",
+      "license": "MPL-2.0",
+      "files": {
+        "axe.min.js": "axe-core/axe.min.js"
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+/* text-reveal: reads only --sfc-* theme variables. Headline type by default; on a <p> it uses body type.
+   Override font-size on the root to fit your layout. */
+
+[data-sfc="text-reveal"] {
+  margin: 0;
+  color: var(--sfc-ink);
+  font: 600 clamp(28px, 4vw, 56px) / 1.12 var(--sfc-font-display);
+  letter-spacing: -0.01em;
+  text-wrap: wrap; /* balance or pretty would move line breaks after the split */
+}
+
+p[data-sfc="text-reveal"] {
+  font: 400 clamp(18px, 1.6vw, 22px) / 1.5 var(--sfc-font-body);
+  letter-spacing: 0;
+}
+
+[data-sfc="text-reveal"] .sfc-tr-text {
+  display: block;
+}
+
+/* Split units need a box of their own for the y offset. Words keep normal spacing between them. */
+[data-sfc="text-reveal"] .sfc-tr-unit,
+[data-sfc="text-reveal"] .sfc-tr-word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Lines are full-width blocks inside their masks. */
+[data-sfc="text-reveal"][data-sfc-mode="lines"] .sfc-tr-unit,
+[data-sfc="text-reveal"][data-sfc-mode="lines"] .sfc-tr-unit-mask {
+  display: block;
+}
+
+/* The mask clips the rise. The padding gives descenders and accents room at rest, and the negative
+   margin gives that room back, so line spacing is unchanged. */
+[data-sfc="text-reveal"][data-sfc-mode="lines"] .sfc-tr-unit-mask {
+  padding-block: 0.2em;
+  margin-block: -0.2em;
+}
+
+/* Letters are positioned one by one, so kerning would shift them at the split. */
+[data-sfc="text-reveal"][data-sfc-mode="chars"] {
+  font-kerning: none;
+}
+
+[data-sfc="text-reveal"] .sfc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

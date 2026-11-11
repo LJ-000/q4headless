@@ -1,0 +1,61 @@
+/* border-beam: reads only --sfc-* theme variables. Knobs on the root:
+   --sfc-beam-width (ring width), --sfc-beam-size (streak length; also set from opts.size).
+   The ring and the streak are adapted from Magic UI's BorderBeam (MIT, see THIRD-PARTY-LICENSE.md). */
+
+[data-sfc="border-beam"] {
+  --sfc-beam-width: 2px;
+  --sfc-beam-size: 200px;
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  background: var(--sfc-surface);
+  /* No border of its own: the ring below draws it, inside the padding box, so a parent with
+     overflow: hidden (a bento tile, a slide) cannot clip it. */
+  border: 0;
+  border-radius: var(--sfc-radius);
+  color: var(--sfc-ink);
+}
+
+/* The ring: a layer over the root's padding box, masked so only its own border band shows. Its
+   border is the resting border color, and the streak runs over it.
+   Two opaque mask layers, one clipped to the padding box and one to the border box, combined with
+   exclude: what is left is the border band. (Magic UI intersects a transparent layer instead; exclude
+   is the form that every engine paints the same way.) */
+[data-sfc="border-beam"] > .sfc-beam {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  box-sizing: border-box;
+  border: var(--sfc-beam-width) solid var(--sfc-surface-border);
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#000, #000), linear-gradient(#000, #000);
+  -webkit-mask-clip: padding-box, border-box;
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000, #000), linear-gradient(#000, #000);
+  mask-clip: padding-box, border-box;
+  mask-composite: exclude;
+}
+
+/* The streak: a bar whose tail fades out behind it, carried along the ring by offset-distance
+   (written by the JS). offset-rotate stays auto, so the tail always points back along the path. */
+[data-sfc="border-beam"] .sfc-beam-streak {
+  position: absolute;
+  width: var(--sfc-beam-size);
+  /* a long, short bar rather than Magic UI's square: on a short element (a pill input) a square would
+     reach the opposite edge and light both at once */
+  height: 40px;
+  offset-path: rect(0 auto auto 0 round var(--sfc-radius));
+  offset-distance: 15%;
+  /* a hot tip in --sfc-ink, the accent body, then a long fade into the second accent */
+  background: linear-gradient(to left, var(--sfc-ink) 0%, var(--sfc-accent) 14%, var(--sfc-accent-2) 55%, transparent 100%);
+}
+[data-sfc="border-beam"] .sfc-beam-streak-2 {
+  background: linear-gradient(to left, var(--sfc-ink-muted) 0%, var(--sfc-accent-2) 40%, transparent 100%);
+}
+
+/* Content sits above the ring. */
+[data-sfc="border-beam"] > :not(.sfc-beam) {
+  position: relative;
+  z-index: 1;
+}

@@ -1,0 +1,78 @@
+/* Brand Central 2026: the default sf-design-stack theme.
+   Components read only the --sfc-* variables below.
+   Palette: #001E5B / #022AC0 / #066AFE / #00B3FF / #90D0FE / #EAF5FE / #000B2E.
+   Mapping from the story-decks tokens (dark): eb15 -> bg, cloud68 -> accent,
+   eb50 -> accent-2, cloud80 -> ink-muted.
+   Fonts load from ../assets/fonts/, a path that holds in the repo and inside a packed sfc/ folder. */
+
+@font-face {
+  font-family: "AvantGarde";
+  src: url("../assets/fonts/AvantGardeForSalesforceW05-Dm.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Salesforce Sans";
+  src: url("../assets/fonts/SalesforceSans-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Salesforce Sans";
+  src: url("../assets/fonts/SalesforceSans-Semibold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Salesforce Sans";
+  src: url("../assets/fonts/SalesforceSans-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Dark is the default surface: any element without data-sfc-surface inherits it from :root. */
+:root,
+[data-sfc-surface="dark"] {
+  --sfc-bg: #001E5B;
+  --sfc-bg-grad: linear-gradient(180deg, #001E5B 0%, #022AC0 38%, #066AFE 72%, #00B3FF 100%);
+  --sfc-surface: #022AC0;
+  --sfc-surface-border: rgba(255, 255, 255, 0.18);
+  --sfc-ink: #FFFFFF;
+  --sfc-ink-muted: #90D0FE;
+  --sfc-accent: #00B3FF;
+  --sfc-accent-2: #066AFE;
+  --sfc-glow: rgba(0, 179, 255, 0.35);
+  --sfc-good: #04E1CB;
+  --sfc-warn: #FCC003;
+  --sfc-font-display: "AvantGarde", "Trebuchet MS", sans-serif;
+  --sfc-font-body: "Salesforce Sans", -apple-system, system-ui, sans-serif;
+  --sfc-radius: 16px;
+  --sfc-shadow: 0 18px 50px rgba(0, 11, 46, 0.45);
+}
+
+[data-sfc-surface="light"] {
+  --sfc-bg: #FFFFFF;
+  --sfc-bg-grad: linear-gradient(180deg, #90D0FE 0%, #EAF5FE 100%);
+  --sfc-surface: #EAF5FE;
+  --sfc-surface-border: rgba(2, 42, 192, 0.16);
+  --sfc-ink: #000B2E;
+  --sfc-ink-muted: #4A6296;
+  --sfc-accent: #066AFE;
+  --sfc-accent-2: #022AC0;
+  --sfc-glow: rgba(6, 106, 254, 0.22);
+  --sfc-good: #087F6E;
+  --sfc-warn: #B07C00;
+  --sfc-font-display: "AvantGarde", "Trebuchet MS", sans-serif;
+  --sfc-font-body: "Salesforce Sans", -apple-system, system-ui, sans-serif;
+  --sfc-radius: 16px;
+  --sfc-shadow: 0 18px 50px rgba(2, 42, 192, 0.12);
+}
+
+/* Scoped surfaces re-set text color so a light block nested in a dark page (or the reverse) reads correctly. */
+[data-sfc-surface] {
+  color: var(--sfc-ink);
+}

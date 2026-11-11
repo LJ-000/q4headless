@@ -1,0 +1,97 @@
+/* device-frame: reads only --sfc-* theme variables. The shells are plain CSS boxes. Nothing here sets a
+   transform on .sfc-device: GSAP owns it. Without JS the device shows flat, which is the final frame. */
+
+[data-sfc="device-frame"] {
+  --sfc-device-bezel: color-mix(in oklab, var(--sfc-bg) 82%, var(--sfc-ink) 18%);
+  --sfc-device-rim: var(--sfc-surface-border);
+  display: block;
+  width: 100%;
+  max-width: 880px;
+  margin-inline: auto;
+  color: var(--sfc-ink);
+}
+/* On a light page the device is dark, the way real hardware looks. */
+[data-sfc-surface="light"] [data-sfc="device-frame"],
+[data-sfc="device-frame"][data-sfc-surface="light"] {
+  --sfc-device-bezel: var(--sfc-ink);
+  --sfc-device-rim: color-mix(in oklab, var(--sfc-ink) 70%, var(--sfc-bg) 30%);
+}
+[data-sfc="device-frame"][data-device="phone"] { max-width: 300px; }
+
+[data-sfc="device-frame"] .sfc-stage { perspective: 1600px; perspective-origin: 50% 30%; }
+[data-sfc="device-frame"] .sfc-device { transform-origin: 50% 85%; will-change: transform; }
+
+[data-sfc="device-frame"] .sfc-shell {
+  position: relative;
+  padding: 2.4% 2.4% 3%;
+  background: var(--sfc-device-bezel);
+  border: 1px solid var(--sfc-device-rim);
+  border-radius: 20px 20px 8px 8px;
+  box-shadow: var(--sfc-shadow);
+}
+[data-sfc="device-frame"] .sfc-screen {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--sfc-bg);
+}
+[data-sfc="device-frame"] .sfc-screen-content { position: absolute; inset: 0; overflow: hidden; }
+[data-sfc="device-frame"] .sfc-screen-content > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* A light band that crosses the glass during the tilt. A linear gradient, wider than the screen. */
+[data-sfc="device-frame"] .sfc-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(105deg, transparent 38%, color-mix(in srgb, var(--sfc-ink) 30%, transparent) 50%, transparent 62%);
+  background-size: 250% 100%;
+  background-position: 130% 0%;
+  mix-blend-mode: screen;
+}
+
+[data-sfc="device-frame"] .sfc-cam {
+  position: absolute;
+  top: 0.9%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: var(--sfc-device-rim);
+}
+[data-sfc="device-frame"] .sfc-base {
+  position: relative;
+  height: clamp(10px, 1.8vw, 16px);
+  margin: 0 -6.5%;
+  background: linear-gradient(to bottom, var(--sfc-device-rim), var(--sfc-device-bezel));
+  border-radius: 2px 2px 16px 16px;
+  box-shadow: var(--sfc-shadow);
+}
+[data-sfc="device-frame"] .sfc-base::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 16%;
+  height: 40%;
+  transform: translateX(-50%);
+  border-radius: 0 0 8px 8px;
+  background: var(--sfc-device-bezel);
+}
+
+/* Phone: one rounded slab, a tall screen and an island. */
+[data-sfc="device-frame"][data-device="phone"] .sfc-shell { padding: 11px; border-radius: 46px; }
+[data-sfc="device-frame"][data-device="phone"] .sfc-screen { aspect-ratio: 9 / 19.5; border-radius: 36px; }
+[data-sfc="device-frame"] .sfc-island {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  z-index: 2;
+  width: 28%;
+  height: 24px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: var(--sfc-device-bezel);
+}

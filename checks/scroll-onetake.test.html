@@ -1,0 +1,250 @@
+<!doctype html>
+<html>
+<meta charset="utf-8">
+<title>scroll one-take: the page keeps its grammar</title>
+<!-- budget-ms: 40000 -->
+<!-- Run with: node "$SF_DESIGN_STACK/tools/browser-test.mjs" checks/scroll-onetake.test.html
+     (and checks/scroll-onetake-reduced.html with --reduced-motion for the real media query).
+     The page under test is ../index.html, loaded four times: live and live2 with ?scroll=off (no
+     ScrollTrigger, so this page seeks the master timeline itself), calm with ?motion=reduce, and narrow in a
+     700 px window. Chrome reads each iframe's own size, so the 1920 x 1080 frame is measured at scale 1.
+     It proves, from the DOM:
+     (a) every seam is a carry: the outgoing element is on screen before it, the incoming one after it, the
+         carried box starts on the outgoing one and travels, the camera only travels inside a seam, and the
+         hand is on the outgoing element at the press;
+     (b) determinism: the same time gives the same DOM, after other seeks and across two page loads;
+     (c) rhythm: rests are dead still, about a quarter or more of the run is still, and nothing on screen
+         moves more than 80 px per 1/60 s;
+     (d) reduced motion and small windows: a stacked static page with every component at its final frame,
+         no camera, no scroll listener, no sideways scroll.
+     Edit the page, keep these green. When you add an area, add its carry key to both neighbours. -->
+<style>
+  body { margin: 0; }
+  iframe { border: 0; display: block; }
+  #live, #live2 { width: 1920px; height: 1080px; }
+  #calm { width: 1280px; height: 1800px; }
+  #narrow { width: 700px; height: 900px; }
+</style>
+<output id="result"></output>
+<iframe id="live" src="../index.html?scroll=off"></iframe>
+<iframe id="live2" src="../index.html?scroll=off"></iframe>
+<iframe id="calm" src="../index.html?motion=reduce"></iframe>
+<iframe id="narrow" src="../index.html"></iframe>
+<script src="harness.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const ready = (id) => new Promise((res) => {
+    const f = $(id);
+    const go = () => res(f.contentWindow.__onetake.then((o) => ({ w: f.contentWindow, d: f.contentDocument, o })));
+    if (f.contentDocument && f.contentDocument.readyState === 'complete' && f.contentWindow.__onetake) go();
+    else f.addEventListener('load', go, { once: true });
+  });
+
+  // ---- geometry and visibility, in the frame's own pixels ----
+  const rectIn = (el, o) => {
+    const r = el.getBoundingClientRect(), f = o.root.getBoundingClientRect();
+    return { x: r.left - f.left, y: r.top - f.top, w: r.width, h: r.height, cx: r.left - f.left + r.width / 2, cy: r.top - f.top + r.height / 2 };
+  };
+  const effOpacity = (el) => {
+    const w = el.ownerDocument.defaultView;
+    let o = 1;
+    for (let n = el; n && n.nodeType === 1; n = n.parentElement) {
+      const cs = w.getComputedStyle(n);
+      if (cs.display === 'none') return 0;
+      o *= Number(cs.opacity);
+    }
+    return w.getComputedStyle(el).visibility === 'hidden' ? 0 : o;
+  };
+  const inFrame = (r) => {
+    const ix = Math.max(0, Math.min(r.x + r.w, 1920) - Math.max(r.x, 0));
+    const iy = Math.max(0, Math.min(r.y + r.h, 1080) - Math.max(r.y, 0));
+    return r.w * r.h > 0 ? (ix * iy) / (r.w * r.h) : 0;
+  };
+  const visible = (el, o) => effOpacity(el) >= 0.5 && inFrame(rectIn(el, o)) >= 0.3;
+  const DIAG = Math.hypot(1920, 1080);
+  const snap = (d) => d.querySelector('.ot-root').innerHTML;
+  const where = (a, b) => { let i = 0; while (i < a.length && a[i] === b[i]) i++; return ' near: ' + a.slice(Math.max(0, i - 160), i + 60) + ' VS ' + b.slice(Math.max(0, i - 20), i + 60); };
+
+  // ---- (a) carries ----
+  test('the world builds with no warnings, and every seam is a carry', async () => {
+    const { o } = await ready('live');
+    assert.equal(o.mode, 'live', 'live world built' + (o.error ? ': ' + o.error : ''));
+    assert.ok(o.areas.length >= 2, 'at least two areas');
+    assert.equal(o.warnings.length, 0, 'warnings: ' + o.warnings.join(' | '));
+    assert.equal(o.seams.length, o.areas.length - 1);
+    o.seams.forEach((s) => assert.equal(s.kind, 'carry', s.name + ' is a carry, not a cut (mark a hard reset with data-ot-seam="reset")'));
+  });
+
+  test('at every seam the outgoing element is on screen before and the incoming one after, and the box travels', async () => {
+    const { o } = await ready('live');
+    for (const s of o.seams) {
+      o.tl.seek(s.t0 - 0.02, false);
+      assert.ok(visible(s.from, o), s.name + ': the outgoing element is on screen before the seam');
+      o.tl.seek(s.t0 + 0.08, false); // the handover is done: the incoming box is opaque, still on the outgoing one
+      const ra = rectIn(s.from, o), rb0 = rectIn(s.to, o);
+      assert.ok(effOpacity(s.to) > 0.9, s.name + ': the incoming element has taken over (' + effOpacity(s.to).toFixed(2) + ')');
+      const off = Math.hypot(rb0.cx - ra.cx, rb0.cy - ra.cy);
+      assert.ok(off <= 0.04 * DIAG, s.name + ': the incoming box starts on the outgoing one (' + off.toFixed(1) + ' px off)');
+      assert.ok(rb0.w / ra.w > 0.75 && rb0.w / ra.w < 1.33 && rb0.h / ra.h > 0.75 && rb0.h / ra.h < 1.33, s.name + ': same size at the handover');
+      o.tl.seek(s.t1 + 0.02, false);
+      assert.ok(visible(s.to, o), s.name + ': the incoming element is on screen after the seam');
+      const rb1 = rectIn(s.to, o);
+      const moved = Math.hypot(rb1.cx - rb0.cx, rb1.cy - rb0.cy) / DIAG, grew = Math.abs(rb1.w / rb0.w - 1);
+      assert.ok(moved >= 0.01 || grew >= 0.1, s.name + ': the carried box travels or rescales (' + moved.toFixed(3) + ', ' + grew.toFixed(2) + ')');
+    }
+  });
+
+  test('every camera travel happens inside a seam', async () => {
+    const { o } = await ready('live');
+    const k = o.keys;
+    for (let i = 1; i < k.length; i++) {
+      const dist = Math.hypot(k[i].x - k[i - 1].x, k[i].y - k[i - 1].y);
+      const zoom = Math.abs(Math.log(k[i].zoom / k[i - 1].zoom));
+      if (dist < 200 && zoom < 0.1) continue; // a hold or a small reframe inside an area
+      const t0 = k[i - 1].t, t1 = k[i].t;
+      const inSeam = o.seams.some((s) => t0 >= s.t0 - 0.4 && t1 <= s.t1 + 0.4);
+      const pull = o.map && t0 >= o.T.pull - 0.01 && t1 <= o.T.pullEnd + 0.01;
+      assert.ok(inSeam || pull, 'camera leg ' + t0.toFixed(2) + '-' + t1.toFixed(2) + ' s travels ' + dist.toFixed(0) + ' px with no carry around it');
+    }
+  });
+
+  test('every change has a visible cause: the hand is on the outgoing element at the press', async () => {
+    const { o } = await ready('live');
+    if (o.cursor.style.display === 'none' || !o.seams.length) return;
+    for (const s of o.seams) {
+      o.tl.seek(s.t0 - 0.12, false);
+      const ra = rectIn(s.from, o), rc = rectIn(o.cursor, o);
+      const tipX = rc.x + 3, tipY = rc.y + 2;
+      assert.ok(visible(o.cursor, o), s.name + ': the hand is on screen at the press');
+      assert.ok(tipX >= ra.x - 4 && tipX <= ra.x + ra.w + 4 && tipY >= ra.y - 6 && tipY <= ra.y + ra.h + 6,
+        s.name + ': the hand is over the outgoing element at the press (' + tipX.toFixed(0) + ',' + tipY.toFixed(0) + ')');
+    }
+  });
+
+  // ---- (b) determinism ----
+  test('determinism: the same time gives the same DOM after other seeks, and across two page loads', async () => {
+    const a = await ready('live'), b = await ready('live2');
+    assert.ok(Math.abs(a.o.tl.duration() - b.o.tl.duration()) < 1e-9, 'same length');
+    const D = a.o.tl.duration();
+    const TIMES = [0.4, 1.7, 3, 4.6, D * 0.3, D * 0.45, D * 0.6, D * 0.75, D * 0.9, D - 0.5].map((t) => Math.round(t * 100) / 100);
+    const first = {};
+    for (const t of TIMES) { a.o.tl.seek(t, false); first[t] = snap(a.d); }
+    const order = TIMES.slice().reverse().concat(TIMES.filter((_, i) => i % 2));
+    for (const t of order) {
+      a.o.tl.seek(D, false);
+      a.o.tl.seek(0, false);
+      a.o.tl.seek(t, false);
+      assert.ok(snap(a.d) === first[t], 'differs on revisit at ' + t + where(snap(a.d), first[t]));
+      b.o.tl.seek(t, false);
+      assert.ok(snap(b.d) === first[t], 'differs from a second page load at ' + t + where(snap(b.d), first[t]));
+    }
+  });
+
+  // ---- (c) rhythm, rests and speed ----
+  test('rests are dead still, and a quarter or more of the run is still', async () => {
+    const { d, o } = await ready('live');
+    const step = 1 / 30, D = o.tl.duration();
+    const still = [];
+    o.tl.seek(0, false);
+    let prev = snap(d);
+    for (let t = step; t <= D + 1e-9; t += step) {
+      o.tl.seek(t, false);
+      const s = snap(d);
+      still.push({ t, still: s === prev });
+      prev = s;
+    }
+    for (const [r0, r1] of o.rests) {
+      const inside = still.filter((p) => p.t > r0 + step && p.t <= r1 - 1e-6);
+      assert.ok(inside.length > 0 && inside.every((p) => p.still), 'rest ' + r0.toFixed(2) + '-' + r1.toFixed(2) + ' is dead still');
+    }
+    const share = still.filter((p) => p.still).length / still.length;
+    assert.ok(share >= 0.25, 'still share ' + share.toFixed(3) + ' (aim for a quarter to a third; lengthen data-ot-rest or add a data-ot-hold)');
+  });
+
+  test('nothing on screen moves more than 80 px per 1/60 s of timeline (camera, zoom, hand and carried boxes)', async () => {
+    const { d, o } = await ready('live');
+    const m0 = () => new DOMMatrix(o.world.style.transform || 'none');
+    const grid = [];
+    for (let x = 0; x <= parseFloat(o.world.style.width); x += 300) for (let y = 0; y <= parseFloat(o.world.style.height); y += 300) grid.push([x, y]);
+    const tracked = [o.cursor].concat(o.seams.map((s) => s.to));
+    const sample = () => {
+      const m = m0();
+      const pts = grid.map(([x, y]) => { const p = m.transformPoint(new DOMPoint(x, y)); return [p.x + o.world.offsetLeft, p.y + o.world.offsetTop]; });
+      const els = tracked.map((el) => (effOpacity(el) > 0.05 ? rectIn(el, o) : null));
+      return { pts, els };
+    };
+    const onScreen = (p) => p[0] >= 0 && p[0] <= 1920 && p[1] >= 0 && p[1] <= 1080;
+    let peak = { v: 0, t: 0, what: '' };
+    const D = o.tl.duration();
+    o.tl.seek(0, false);
+    let a = sample();
+    for (let t = 1 / 60; t <= D + 1e-9; t += 1 / 60) {
+      o.tl.seek(t, false);
+      const b = sample();
+      for (let i = 0; i < grid.length; i++) {
+        if (!onScreen(a.pts[i]) && !onScreen(b.pts[i])) continue;
+        const v = Math.hypot(b.pts[i][0] - a.pts[i][0], b.pts[i][1] - a.pts[i][1]);
+        if (v > peak.v) peak = { v, t, what: 'world point ' + grid[i] };
+      }
+      for (let j = 0; j < tracked.length; j++) {
+        const ra = a.els[j], rb = b.els[j];
+        if (!ra || !rb || (inFrame(ra) === 0 && inFrame(rb) === 0)) continue;
+        const v = Math.hypot(rb.cx - ra.cx, rb.cy - ra.cy) + Math.abs(Math.hypot(rb.w, rb.h) - Math.hypot(ra.w, ra.h)) / 2;
+        if (v > peak.v) peak = { v, t, what: tracked[j].className && tracked[j].className.baseVal !== undefined ? 'the hand' : (tracked[j].id || tracked[j].className) };
+      }
+      a = b;
+    }
+    assert.ok(peak.v <= 80, 'peak ' + peak.v.toFixed(1) + ' px/frame at ' + peak.t.toFixed(2) + ' s (' + peak.what + '); move the areas closer');
+  });
+
+  test('pull-back: every area is frozen at its final pose, only the camera, the route and the tagline move', async () => {
+    const { o } = await ready('live');
+    if (!o.map) return;
+    const grab = (t) => { o.tl.seek(t, false); return o.areas.map((g) => g.el.innerHTML); };
+    const a = grab(o.T.pull + 0.02);
+    for (const t of [o.T.pull + 0.5, o.T.pull + 1.2, o.T.pullEnd, o.T.total]) {
+      const b = grab(t);
+      o.areas.forEach((g, i) => assert.ok(a[i] === b[i], g.id + ' changes during the pull-back at ' + t.toFixed(2) + where(a[i], b[i])));
+    }
+  });
+
+  // ---- (d) reduced motion and small windows ----
+  const stackedAndFinal = async (id, why, final) => {
+    const { w, d, o } = await ready(id);
+    assert.equal(o.mode, 'static', why);
+    assert.ok(d.documentElement.classList.contains('ot-static') && !d.documentElement.classList.contains('ot-live'), 'static layout');
+    assert.ok(!d.querySelector('.ot-world'), 'no world is built');
+    assert.equal(w.ScrollTrigger ? w.ScrollTrigger.getAll().length : 0, 0, 'no ScrollTrigger');
+    assert.ok(o.mounts.length >= 2, 'components mounted');
+    d.querySelectorAll('[data-carry]').forEach((el) => assert.ok(effOpacity(el) > 0.99, 'carry element ' + (el.id || el.textContent.trim().slice(0, 24)) + ' is visible'));
+    d.querySelectorAll('.ot-tagline span').forEach((s) => assert.ok(effOpacity(s) > 0.99, 'tagline word ' + s.textContent));
+    if (final) {
+      // every component at its final frame, nothing lost
+      o.mounts.forEach((m) => assert.ok(m.tl.duration() === 0 || m.tl.progress() === 1, m.id + ' is at its final frame'));
+      d.querySelectorAll('[data-sfc="agent-chat"] .sfc-bubble').forEach((b) => assert.ok(effOpacity(b) > 0.99, 'chat bubble visible'));
+    }
+    // stacked: each area starts below the one before it, and nothing scrolls sideways
+    const areas = [...d.querySelectorAll('.ot-area')].map((r) => r.getBoundingClientRect());
+    for (let i = 1; i < areas.length; i++) assert.ok(areas[i].top >= areas[i - 1].bottom - 1, 'area ' + i + ' is stacked');
+    const root = d.scrollingElement;
+    assert.ok(root.scrollWidth <= root.clientWidth + 1, 'no sideways scroll: ' + root.scrollWidth + ' > ' + root.clientWidth);
+    return { w, d, o };
+  };
+
+  test('reduced motion: a static stacked page, every component at its final frame, nothing running', async () => {
+    const { w } = await stackedAndFinal('calm', 'motion=reduce gives the static page', true);
+    assert.ok(w.SFC.reduced(), 'the page sees reduced motion');
+    const running = () => w.gsap.globalTimeline.getChildren(true, true, false).filter((t) => t.isActive()).length;
+    assert.equal(running(), 0, 'active tweens at mount');
+    await new Promise((r) => setTimeout(() => { w.gsap.ticker.tick(); r(); }, 50));
+    assert.equal(running(), 0, 'active tweens after a tick');
+  });
+
+  test('a window under 760 px wide gets the stacked page too', async () => {
+    const { w } = await stackedAndFinal('narrow', 'a 700 px window gets the static page', false);
+    assert.ok(!w.SFC.reduced(), 'this one is not reduced motion: components play in view');
+  });
+
+  done();
+</script>
+</html>

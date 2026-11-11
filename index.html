@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en" data-sfc-medium="web">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="sfc-intensity" content="3">
+<title>Build on headless with Salesforce: a partner guide</title>
+<link rel="stylesheet" href="sfc/themes/brand-central.css">
+<link rel="stylesheet" href="sfc/components/camera-rig/camera-rig.css">
+<link rel="stylesheet" href="sfc/components/one-take/one-take.css">
+<link rel="stylesheet" href="sfc/components/form-frame/form-frame.css">
+<link rel="stylesheet" href="sfc/components/carry/carry.css">
+<link rel="stylesheet" href="sfc/components/kinetic-type/kinetic-type.css">
+<link rel="stylesheet" href="sfc/components/text-reveal/text-reveal.css">
+<link rel="stylesheet" href="sfc/components/chart-donut/chart-donut.css">
+<link rel="stylesheet" href="sfc/components/bento-grid/bento-grid.css">
+<link rel="stylesheet" href="sfc/components/border-beam/border-beam.css">
+<link rel="stylesheet" href="sfc/components/device-frame/device-frame.css">
+<link rel="stylesheet" href="sfc/components/chart-area/chart-area.css">
+<link rel="stylesheet" href="sfc/components/arch-flow/arch-flow.css">
+<link rel="stylesheet" href="sfc/components/agent-chat/agent-chat.css">
+<link rel="stylesheet" href="page.css">
+</head>
+<body>
+<main class="ot" data-ot data-ot-pullback="off" aria-label="Why headless, and why now">
+
+  <section class="ot-area ot-hero ground-evening" id="hero" data-sfc-surface="dark">
+    <img class="ot-logo" src="assets/salesforce-cloud-primary.svg" width="511" height="358" alt="Salesforce">
+    <div class="ot-sparkles" aria-hidden="true">
+      <img class="ot-spark-main" src="assets/sparkles-yellow-main-web.webp" width="1800" height="1920" alt="">
+      <img class="ot-spark-a" src="assets/sparkles-blue-inclined-web.webp" width="1800" height="1920" alt="">
+    </div>
+    <div class="ot-body">
+      <div class="ot-hero-copy">
+        <p class="ot-eyebrow">AIforce &middot; AgentExchange</p>
+        <h1 class="ot-h1" data-sfc="kinetic-type" data-sfc-opts='{"effect":"blur-in"}'>Agents change what we build, and how.</h1>
+        <p class="ot-lede">Software used to follow fixed steps. Now an agent decides which tools to call. Here is how to find your starting point and get going.</p>
+        <a class="ot-chip" href="#proof" data-carry="why">Why headless</a>
+      </div>
+      <div class="ot-stand" aria-hidden="true" data-sfc="form-frame" data-sfc-opts='{"form":"subtract-3","gradient":"gradient-morning","at":0.45,"fit":"meet"}'>
+        <img class="ot-astro" src="assets/agent-astro-3d-10-l.png" width="343" height="334" alt="">
+      </div>
+    </div>
+  </section>
+
+  <section class="ot-area ot-proof ground-morning" id="proof" data-sfc-surface="light">
+    <div class="ot-body">
+      <div class="ot-card" data-carry="why">
+        <div class="ot-copy">
+          <p class="ot-eyebrow">Why build on headless</p>
+          <h2 class="ot-h2" data-sfc="text-reveal" data-sfc-opts='{"mode":"words"}'>Build once. Show up wherever agents work.</h2>
+          <a class="ot-chip" href="#start">Find your starting point</a>
+        </div>
+        <ul class="ot-pillars">
+          <li><b>Reach</b><span>One build shows up in Agentforce, Slack and external agents like Claude and ChatGPT.</span></li>
+          <li><b>Reuse</b><span>Existing APIs, Apex, Flows and MCP servers become agent tools. No rewrite.</span></li>
+          <li><b>Trust</b><span>Per-user auth, ECA scoping and security review sit on the Salesforce side.</span></li>
+          <li><b>Distribution</b><span>Packaged work can be listed and sold through the ecosystem.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="mx-sections">
+
+  <section class="mx-section ground-morning" id="start" data-sfc-surface="light" aria-label="Your starting point">
+    <div class="mx-wrap">
+      <p class="mx-eyebrow">Step 1 &middot; Your starting point</p>
+      <h2 class="mx-h2">Where are you starting?</h2>
+      <p class="mx-lede">Pick the line that sounds like you.</p>
+
+      <div class="sel-row" role="tablist" aria-label="Starting point" data-sel="start">
+        <button class="sel-card" role="tab" type="button" id="t-le" aria-controls="p-le" data-pick="le"><span class="sel-name">Bring your MCP server</span><span class="sel-hear">&ldquo;We already have an MCP server.&rdquo;</span></button>
+        <button class="sel-card" role="tab" type="button" id="t-tr" aria-controls="p-tr" data-pick="tr"><span class="sel-name">Expose your app to agents</span><span class="sel-hear">&ldquo;We want external agents to use our app.&rdquo;</span></button>
+        <button class="sel-card" role="tab" type="button" id="t-cg" aria-controls="p-cg" data-pick="cg"><span class="sel-name">Build a new experience</span><span class="sel-hear">&ldquo;We&rsquo;re building a new experience in React.&rdquo;</span></button>
+      </div>
+
+      <div class="sel-panels" data-panels="start">
+        <article class="sel-panel" role="tabpanel" id="p-le" aria-labelledby="t-le">
+          <div class="sel-cols">
+            <div>
+              <h3>Start by asking yourself</h3>
+              <p class="sel-ask">Which tool are your customers calling today, and what do they get done with it?</p>
+              <p class="sel-eg"><b>For example.</b> If customers already use a provider lookup, bringing that lookup into Salesforce is a specific place to start.</p>
+            </div>
+            <div>
+              <h3>Questions to consider</h3>
+              <ul class="sel-list">
+                <li>What counts as a headless solution for your product?</li>
+                <li>What did you build it on, and where is it hosted?</li>
+                <li>What types of tools are you exposing?</li>
+                <li>What is your customer adoption like today?</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Technology mapping</h3>
+              <ul class="sel-chips"><li>MCP client registry</li><li>MCP server (custom or Headless 360)</li></ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="sel-panel" role="tabpanel" id="p-tr" aria-labelledby="t-tr">
+          <div class="sel-cols">
+            <div>
+              <h3>Start by asking yourself</h3>
+              <p class="sel-ask">What is the first thing a customer has asked an agent to do on their behalf?</p>
+              <p class="sel-eg"><b>For example.</b> Wanting to be available in an external agent is one thing. Knowing a customer wants to review an agreement there is a use case you can validate.</p>
+            </div>
+            <div>
+              <h3>Questions to consider</h3>
+              <ul class="sel-list">
+                <li>What are your core use cases?</li>
+                <li>Which agents are you targeting?</li>
+                <li>Are user requests coming from your customers?</li>
+                <li>What are the jobs to be done?</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Technology mapping</h3>
+              <ul class="sel-chips"><li>Widgets, for opinionated UX</li><li>Apex, Flows and agents as MCP tools</li><li>Skills, for a guided journey</li></ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="sel-panel" role="tabpanel" id="p-cg" aria-labelledby="t-cg">
+          <div class="sel-cols">
+            <div>
+              <h3>Start by asking yourself</h3>
+              <p class="sel-ask">Walk through your customer journey. At what point does someone need Salesforce data, or permission to take an action?</p>
+              <p class="sel-eg"><b>For example.</b> That is a natural opening for Multi-Framework, including for customers who want a better experience right in the browser.</p>
+            </div>
+            <div>
+              <h3>Questions to consider</h3>
+              <ul class="sel-list">
+                <li>Which customer journey are you reimagining?</li>
+                <li>Which frameworks do your teams need to support?</li>
+                <li>What Salesforce data, workflows and permissions do you need?</li>
+                <li>Where else should the experience be available?</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Technology mapping</h3>
+              <ul class="sel-chips"><li>Multi-Framework strategy</li><li>Consumer-grade React apps</li><li>Angular support: check current status</li></ul>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <h2 class="mx-h2 mx-h2-sub">Step 2 &middot; Where do your customers work?</h2>
+      <div class="sel-row" role="tablist" aria-label="Where your customers work" data-sel="surface">
+        <button class="sel-card" role="tab" type="button" id="s-sf" aria-controls="q-sf" data-pick="sf"><span class="sel-name">In Salesforce</span><span class="sel-hear">Customers working in Lightning and Agentforce.</span></button>
+        <button class="sel-card" role="tab" type="button" id="s-ex" aria-controls="q-ex" data-pick="ex"><span class="sel-name">In Slack, Claude, ChatGPT or Teams</span><span class="sel-hear">Customers working in another agent surface.</span></button>
+        <button class="sel-card" role="tab" type="button" id="s-no" aria-controls="q-no" data-pick="no"><span class="sel-name">Not on Salesforce</span><span class="sel-hear">Your customers are not Salesforce customers.</span></button>
+      </div>
+
+      <div class="sel-panels" data-panels="surface">
+        <article class="sel-panel" role="tabpanel" id="q-sf" aria-labelledby="s-sf">
+          <div class="sel-cols sel-cols-2">
+            <div>
+              <h3>Where it lands</h3>
+              <p class="sel-ask">Inside Salesforce, where your customer already works.</p>
+              <ul class="sel-list">
+                <li>Register your external MCP server so Agentforce can call it as an MCP client.</li>
+                <li>Package an Agentforce agent and actions, so your logic becomes tools.</li>
+                <li>Build UI with LWC and Lightning types, or with Multi-Framework.</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Where to start</h3>
+              <ul class="sel-chips"><li>External MCP Registration</li><li>Agentforce scripts and actions</li><li>Multi-Framework UI</li></ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="sel-panel" role="tabpanel" id="q-ex" aria-labelledby="s-ex">
+          <div class="sel-cols sel-cols-2">
+            <div>
+              <h3>Where it lands</h3>
+              <p class="sel-ask">On the surface where your customer already works, with Salesforce context behind it.</p>
+              <ul class="sel-list">
+                <li>Let outside agents reach the org through the Headless MCP Server and an External Client App.</li>
+                <li>Render widgets natively from one configuration: a Block Kit card in Slack, an adaptive card in Teams.</li>
+                <li>Use marketplace connectors so customers set up access with a click.</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Where to start</h3>
+              <ul class="sel-chips"><li>Headless MCP Server via ECA</li><li>HXL widgets</li><li>Skills and plugins</li></ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="sel-panel sel-embed" role="tabpanel" id="q-no" aria-labelledby="s-no">
+          <p class="sel-step">If your customers are not on Salesforce</p>
+          <h3 class="sel-embed-h">Embed partners (OEM)</h3>
+          <p class="sel-embed-p">You run your own branded product on top of Salesforce, with Salesforce invisible underneath. OEM solutions rely on Platform licenses with access limited to a small set of objects, and most of your customers aren&rsquo;t existing Salesforce customers. Cloud-specific objects have been out of reach. A few select OEM partners can use approved objects.</p>
+          <p class="sel-embed-p"><b>Back to headless.</b> Headless lets you ship AI-native features under your own brand.</p>
+        </article>
+      </div>
+
+      <p class="sel-path" id="sel-path" aria-live="polite"></p>
+
+      <div class="sel-ask4">
+        <h3>Questions to answer before you start</h3>
+        <ol>
+          <li>Do you have an agentic strategy today, and what is committed for the next two to three quarters?</li>
+          <li>Do you already have an MCP server, or plan to build one?</li>
+          <li>Which capabilities do you want agents or external apps to call?</li>
+          <li>What would make this a win in the next six to twelve months?</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-section ground-evening" id="foundation" data-sfc-surface="dark" aria-label="How it connects">
+    <div class="mx-sparks" aria-hidden="true">
+      <img class="mx-spark mx-spark-l" src="assets/sparkles-yellow-main-web.webp" width="1800" height="1920" alt="">
+      <img class="mx-spark mx-spark-r" src="assets/sparkles-blue-inclined-web.webp" width="1800" height="1920" alt="">
+    </div>
+    <div class="mx-wrap">
+      <p class="mx-eyebrow">The foundation</p>
+      <h2 class="mx-h2">Any agent can reach Salesforce through one server.</h2>
+      <p class="mx-lede">The agent finds the right action, checks it, and runs it. Customer data and permissions stay where they were.</p>
+      <div class="mx-flow" data-sfc="arch-flow" data-sfc-opts='{"nodes":[{"id":"agent","label":"Any authorized agent","product":"Claude, ChatGPT, Slack, Agentforce"},{"id":"mcp","label":"Discover, describe, dispatch","product":"Headless 360 MCP Server"},{"id":"actions","label":"Apex, Flows, Named Queries","product":"Salesforce platform"},{"id":"data","label":"Customer data and permissions","product":"Data 360"},{"id":"hxl","label":"Widgets on every surface","product":"Headless Experience Layer"}],"edges":[{"from":"agent","to":"mcp"},{"from":"mcp","to":"actions"},{"from":"actions","to":"data"},{"from":"mcp","to":"hxl"}]}'></div>
+    </div>
+  </section>
+
+
+  <section class="mx-section ground-evening" id="hxl" data-sfc-surface="dark" aria-label="Headless Experience Layer">
+    <div class="mx-sparks" aria-hidden="true">
+      <img class="mx-spark mx-spark-l" src="assets/sparkles-blue-inclined-web.webp" width="1800" height="1920" alt="">
+      <img class="mx-spark mx-spark-r" src="assets/sparkles-yellow-main-web.webp" width="1800" height="1920" alt="">
+    </div>
+    <div class="mx-wrap mx-product">
+      <div>
+        <p class="mx-eyebrow">Headless Experience Layer</p>
+        <h2 class="mx-h2">The answer arrives as an interface, not a paragraph.</h2>
+        <p class="mx-lede">One configuration. The same widget renders natively on each surface: a Block Kit card in Slack, an adaptive card in Teams.</p>
+        <div class="mx-chat" data-sfc="agent-chat" data-sfc-opts='{"agentName":"Agent","messages":[{"from":"user","text":"Can you help me book a car?"},{"from":"agent","text":"Yes. Fill in the form below and I will reserve it."},{"from":"user","text":"Mid-size, Friday pickup."},{"from":"agent","text":"Done. Your confirmation is in the card.","widget":{"type":"stat","value":"Confirmed","label":"mid-size, Friday pickup"}}]}'></div>
+      </div>
+      <div data-sfc="device-frame" data-sfc-opts='{"device":"phone"}'>
+        <div class="mx-ui mx-ui-card">
+          <h3>Book a car</h3>
+          <div class="mx-ui-field"><span>Class</span><b>Mid-size</b></div>
+          <div class="mx-ui-field"><span>Pickup</span><b>Friday, 9:00</b></div>
+          <div class="mx-ui-field"><span>Return</span><b>Sunday, 18:00</b></div>
+          <div class="mx-ui-btn">Reserve</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="mx-section ground-flat" id="reference" data-sfc-surface="dark" aria-label="Pattern reference">
+    <div class="mx-wrap">
+      <p class="mx-eyebrow">Step 3 &middot; Patterns</p>
+      <h2 class="mx-h2">What can you build and ship?</h2>
+      <p class="mx-lede">Status is shown only for released capabilities. For everything else, check current status.</p>
+
+      <div class="ref-scroll" role="region" aria-label="Patterns" tabindex="0">
+        <table class="ref-table">
+          <thead><tr><th scope="col">Pattern</th><th scope="col">What it does</th><th scope="col">Readiness</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Salesforce Headless MCP Server via ECA</th><td>Outside agents call the org through four tools, with access set up through an External Client App.</td><td>Beta</td></tr>
+            <tr><th scope="row">External MCP Registration</th><td>Register your own MCP server so Agentforce and Slackbot can call it.</td><td>Per User Auth: GA</td></tr>
+            <tr><th scope="row">Custom MCP Servers</th><td>One server that mixes standard, customer and partner-built tools.</td><td>Check current status</td></tr>
+            <tr><th scope="row">HXL Widgets</th><td>Widgets that render natively on each agent surface from one configuration.</td><td>Check current status</td></tr>
+            <tr><th scope="row">Multi-Framework UI</th><td>Build with React and other industry-standard frameworks alongside LWC and Aura.</td><td>Check current status</td></tr>
+            <tr><th scope="row">Skills and plugins</th><td>Guidance that walks an agent through a journey, served through MCP servers.</td><td>Check current status</td></tr>
+            <tr><th scope="row">AIforce Artifacts for Claude</th><td>Artifacts for Claude surfaces.</td><td>Check current status</td></tr>
+            <tr><th scope="row">Agentforce Scripts and Actions</th><td>A packaged script and actions that make an existing package agent-ready.</td><td>Check current status</td></tr>
+            <tr><th scope="row">Data Kit</th><td>Packages partner data for Data 360. Usually a later step.</td><td>Check current status</td></tr>
+            <tr><th scope="row">Agent-to-Agent</th><td>Agents calling other agents.</td><td>Check current status</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="mx-h2 mx-h2-sub">Start, then, later</h2>
+      <p class="mx-lede">By where your product sits today.</p>
+      <div class="ref-scroll" role="region" aria-label="Start, then, later" tabindex="0">
+        <table class="ref-table">
+          <thead><tr><th scope="col">Placement</th><th scope="col">Start</th><th scope="col">Then</th><th scope="col">Later</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Off-platform first<small>A SaaS product outside Salesforce, with its own agent or MCP server.</small></th><td>Headless MCP Server via ECA; External MCP Registration</td><td>HXL widgets; skills and plugins</td><td>Data Kit</td></tr>
+            <tr><th scope="row">On-platform first<small>A managed package, with data and UI mostly in the org.</small></th><td>LWC and Lightning types; packaged Agentforce agent and actions; partner tools on Salesforce-hosted MCP</td><td>Multi-Framework UI; HXL widgets</td><td>External MCP Registration, only if an external agent needs it; Data Kit</td></tr>
+            <tr><th scope="row">Hybrid<small>A meaningful footprint on both sides.</small></th><td>Packaged Agentforce script and actions; External MCP Registration</td><td>Headless MCP Server via ECA; HXL widgets</td><td>Data Kit</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-section ground-morning" id="plan" data-sfc-surface="light" aria-label="Your build plan">
+    <div class="mx-wrap">
+      <p class="mx-eyebrow">Your build plan</p>
+      <h2 class="mx-h2">From architecture to AgentExchange.</h2>
+      <p class="mx-lede">Five steps to get a headless capability in front of customers.</p>
+      <ol class="plan-steps">
+        <li><span class="plan-n">1</span><h3>Architect</h3><p>Pick your starting point and where your customers work. Choose a pattern from the table above, and decide which capabilities agents should call.</p></li>
+        <li><span class="plan-n">2</span><h3>Build</h3><p>Expose your logic as agent tools: an MCP server, or Apex, Flows and named queries. Add HXL widgets or a Multi-Framework UI where the experience needs one.</p></li>
+        <li><span class="plan-n">3</span><h3>Package</h3><p>Package Apex, Flows and named queries, with an External Client App if you need one. MCP packaging is still changing, so check current guidance before you commit.</p></li>
+        <li data-sfc="border-beam" data-sfc-opts='{"duration":7,"size":160}'><span class="plan-n">4</span><h3>Test</h3><p>Test with per-user auth and ECA scoping, then go through Security Review.</p><span class="plan-tag">Security Review</span></li>
+        <li><span class="plan-n">5</span><h3>Distribute</h3><p>List on AgentExchange: review, discovery, procurement, telemetry, joint selling and partner programs.</p></li>
+      </ol>
+      <p class="mx-note plan-note">Capabilities and status change. Check current status before you build.</p>
+      <a class="plan-back" href="#start">Back to your starting point</a>
+    </div>
+  </section>
+</div>
+
+<script src="sfc/vendor/gsap.min.js"></script>
+<script src="sfc/vendor/ScrollTrigger.min.js"></script>
+<script src="sfc/vendor/SplitText.min.js"></script>
+<script src="sfc/vendor/Flip.min.js"></script>
+<script src="sfc/sfc.js"></script>
+<script src="sfc/components/camera-rig/camera-rig.js"></script>
+<script src="sfc/components/carry/carry.js"></script>
+<script src="sfc/components/one-take/one-take.js"></script>
+<script src="sfc/components/form-frame/form-frame.js"></script>
+<script src="sfc/components/kinetic-type/kinetic-type.js"></script>
+<script src="sfc/components/text-reveal/text-reveal.js"></script>
+<script src="sfc/components/chart-donut/chart-donut.js"></script>
+<script src="sfc/components/bento-grid/bento-grid.js"></script>
+<script src="sfc/components/border-beam/border-beam.js"></script>
+<script src="sfc/components/device-frame/device-frame.js"></script>
+<script src="sfc/components/chart-area/chart-area.js"></script>
+<script src="sfc/components/arch-flow/arch-flow.js"></script>
+<script src="sfc/components/agent-chat/agent-chat.js"></script>
+<script src="page.js"></script>
+</body>
+</html>

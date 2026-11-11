@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<meta charset="utf-8">
+<title>scroll one-take under a real reduced-motion setting</title>
+<!-- budget-ms: 20000 -->
+<!-- Run with: node "$SF_DESIGN_STACK/tools/browser-test.mjs" --reduced-motion checks/scroll-onetake-reduced.html
+     Chrome's --force-prefers-reduced-motion reaches the iframe, so the page sees the real media query, not the
+     ?motion=reduce stub that scroll-onetake.test.html uses. It must come out as the stacked static page, every
+     component at its final frame, no camera and no scroll listener. Not a *.test.html page: without the flag it
+     cannot pass. -->
+<style>iframe { width: 1280px; height: 1800px; border: 0; display: block; }</style>
+<output id="result"></output>
+<iframe id="page" src="../index.html"></iframe>
+<script src="harness.js"></script>
+<script>
+  const f = document.getElementById('page');
+  const ready = () => new Promise((res) => {
+    const go = () => res(f.contentWindow.__onetake.then((o) => ({ w: f.contentWindow, d: f.contentDocument, o })));
+    if (f.contentDocument && f.contentDocument.readyState === 'complete' && f.contentWindow.__onetake) go();
+    else f.addEventListener('load', go, { once: true });
+  });
+  const opacityOf = (el) => {
+    const w = el.ownerDocument.defaultView;
+    let o = 1;
+    for (let n = el; n && n.nodeType === 1; n = n.parentElement) {
+      const cs = w.getComputedStyle(n);
+      if (cs.display === 'none') return 0;
+      o *= Number(cs.opacity);
+    }
+    return w.getComputedStyle(el).visibility === 'hidden' ? 0 : o;
+  };
+
+  test('Chrome reports prefers-reduced-motion: reduce (run with --reduced-motion)', () => {
+    assert.ok(matchMedia('(prefers-reduced-motion: reduce)').matches, 'reduced motion is not forced; use browser-test.mjs --reduced-motion');
+  });
+
+  test('the page picks the stacked static version from the media query alone (no ?motion=reduce)', async () => {
+    const { w, d, o } = await ready();
+    assert.equal(o.mode, 'static');
+    assert.ok(w.SFC.reduced());
+    assert.ok(d.documentElement.classList.contains('ot-static') && !d.documentElement.classList.contains('ot-live'));
+    assert.ok(!d.querySelector('.ot-world'), 'no camera world');
+    assert.equal(w.ScrollTrigger ? w.ScrollTrigger.getAll().length : 0, 0, 'no ScrollTrigger');
+  });
+
+  test('every component is at its final frame and every area is on the page, stacked', async () => {
+    const { d, o } = await ready();
+    o.mounts.forEach((m) => assert.ok(m.tl.duration() === 0 || m.tl.progress() === 1, m.id + ' is at its final frame'));
+    d.querySelectorAll('[data-carry], .ot-tagline span, [data-sfc="agent-chat"] .sfc-bubble').forEach((el) => assert.ok(opacityOf(el) > 0.99, 'visible: ' + (el.id || el.textContent.trim().slice(0, 24))));
+    const areas = [...d.querySelectorAll('.ot-area')].map((r) => r.getBoundingClientRect());
+    assert.ok(areas.length >= 2);
+    for (let i = 1; i < areas.length; i++) assert.ok(areas[i].top >= areas[i - 1].bottom - 1, 'area ' + i + ' is stacked');
+  });
+
+  done();
+</script>
+</html>

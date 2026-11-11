@@ -1,0 +1,275 @@
+{
+  "page": "index.html",
+  "variant": "mix",
+  "format": "mix",
+  "intensity": 3,
+  "theme": "brand-central",
+  "items": [
+    {
+      "id": "salesforce-cloud-primary",
+      "kind": "logo",
+      "role": "brand-mark",
+      "source": "assets/logos/salesforce-cloud-primary.svg",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "index.html (assets/salesforce-cloud-primary.svg)",
+      "cleared": "final"
+    },
+    {
+      "id": "sparkles-yellow-main-web",
+      "kind": "sparkle",
+      "role": "accent",
+      "source": "assets/sparkles/Sparkles Yellow Main-web.webp",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "index.html (assets/sparkles-yellow-main-web.webp)",
+      "cleared": "final"
+    },
+    {
+      "id": "sparkles-blue-inclined-web",
+      "kind": "sparkle",
+      "role": "accent",
+      "source": "assets/sparkles/Sparkles Blue Inclined-web.webp",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "index.html (assets/sparkles-blue-inclined-web.webp)",
+      "cleared": "final"
+    },
+    {
+      "id": "agent-astro-3d-10-l",
+      "kind": "character",
+      "role": "hero-subject",
+      "source": "assets/characters/agent-astro/Agent Astro 3D 10 L.png",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "index.html (assets/agent-astro-3d-10-l.png)",
+      "cleared": "final"
+    },
+    {
+      "id": "gradient-evening",
+      "kind": "gradient",
+      "role": "background",
+      "source": "assets/gradients/gradient-evening.svg",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "page.css (assets/gradient-evening.svg)",
+      "cleared": "final"
+    },
+    {
+      "id": "gradient-morning",
+      "kind": "gradient",
+      "role": "background",
+      "source": "assets/gradients/gradient-morning.svg",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "page.css (assets/gradient-morning.svg)",
+      "cleared": "final"
+    },
+    {
+      "id": "subtract-3",
+      "kind": "form",
+      "role": "frame-or-mask",
+      "source": "assets/forms/Subtract-3.svg",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "index.html (form-frame, drawn inline)",
+      "cleared": "final"
+    },
+    {
+      "id": "camera-rig",
+      "kind": "component",
+      "source": "components/camera-rig/",
+      "license": "internal use, same terms as this repo",
+      "usedIn": "sfc/components/camera-rig/",
+      "cleared": "final"
+    },
+    {
+      "id": "one-take",
+      "kind": "component",
+      "source": "components/one-take/",
+      "license": "internal use, same terms as this repo",
+      "usedIn": "sfc/components/one-take/",
+      "cleared": "final"
+    },
+    {
+      "id": "form-frame",
+      "kind": "component",
+      "source": "components/form-frame/",
+      "license": "internal use, same terms as this repo; the forms and gradients are Salesforce brand assets, follow the Brand Central usage rules",
+      "usedIn": "sfc/components/form-frame/",
+      "cleared": "final"
+    },
+    {
+      "id": "carry",
+      "kind": "component",
+      "source": "components/carry/",
+      "license": "internal use, same terms as this repo",
+      "usedIn": "sfc/components/carry/",
+      "cleared": "final"
+    },
+    {
+      "id": "kinetic-type",
+      "kind": "component",
+      "source": "components/kinetic-type/",
+      "license": "internal use, same terms as this repo",
+      "usedIn": "sfc/components/kinetic-type/",
+      "cleared": "final"
+    },
+    {
+      "id": "text-reveal",
+      "kind": "component",
+      "source": "components/text-reveal/",
+      "license": "internal use, same terms as this repo; Magic UI MIT notice in THIRD-PARTY-LICENSE.md",
+      "usedIn": "sfc/components/text-reveal/",
+      "cleared": "final"
+    },
+    {
+      "id": "chart-donut",
+      "kind": "component",
+      "source": "components/chart-donut/",
+      "license": "internal use, same terms as this repo",
+      "usedIn": "sfc/components/chart-donut/",
+      "cleared": "final"
+    },
+    {
+      "id": "bento-grid",
+      "kind": "component",
+      "source": "components/bento-grid/",
+      "license": "internal use, same terms as this repo",
+      "usedIn": "sfc/components/bento-grid/",
+      "cleared": "final"
+    },
+    {
+      "id": "border-beam",
+      "kind": "component",
+      "source": "components/border-beam/",
+      "license": "MIT for the adapted technique (see THIRD-PARTY-LICENSE.md); internal use for the rest",
+      "usedIn": "sfc/components/border-beam/",
+      "cleared": "final"
+    },
+    {
+      "id": "device-frame",
+      "kind": "component",
+      "source": "components/device-frame/",
+      "license": "internal use, same terms as this repo",
+      "usedIn": "sfc/components/device-frame/",
+      "cleared": "final"
+    },
+    {
+      "id": "chart-area",
+      "kind": "component",
+      "source": "components/chart-area/",
+      "license": "internal use, same terms as this repo",
+      "usedIn": "sfc/components/chart-area/",
+      "cleared": "final"
+    },
+    {
+      "id": "arch-flow",
+      "kind": "component",
+      "source": "components/arch-flow/",
+      "license": "internal use, same terms as this repo",
+      "usedIn": "sfc/components/arch-flow/",
+      "cleared": "final"
+    },
+    {
+      "id": "agent-chat",
+      "kind": "component",
+      "source": "components/agent-chat/",
+      "license": "internal use, same terms as this repo",
+      "usedIn": "sfc/components/agent-chat/",
+      "cleared": "final"
+    },
+    {
+      "id": "avant-garde-for-salesforce-w05-dm",
+      "kind": "font",
+      "role": "type",
+      "source": "assets/fonts/AvantGardeForSalesforceW05-Dm.woff",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "sfc/assets/fonts/ (declared by the theme)",
+      "cleared": "final"
+    },
+    {
+      "id": "salesforce-sans-bold",
+      "kind": "font",
+      "role": "type",
+      "source": "assets/fonts/SalesforceSans-Bold.woff",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "sfc/assets/fonts/ (declared by the theme)",
+      "cleared": "final"
+    },
+    {
+      "id": "salesforce-sans-bold-italic",
+      "kind": "font",
+      "role": "type",
+      "source": "assets/fonts/SalesforceSans-BoldItalic.woff",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "sfc/assets/fonts/ (declared by the theme)",
+      "cleared": "final"
+    },
+    {
+      "id": "salesforce-sans-book",
+      "kind": "font",
+      "role": "type",
+      "source": "assets/fonts/SalesforceSans-Book.woff",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "sfc/assets/fonts/ (declared by the theme)",
+      "cleared": "final"
+    },
+    {
+      "id": "salesforce-sans-italic",
+      "kind": "font",
+      "role": "type",
+      "source": "assets/fonts/SalesforceSans-Italic.woff",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "sfc/assets/fonts/ (declared by the theme)",
+      "cleared": "final"
+    },
+    {
+      "id": "salesforce-sans-light",
+      "kind": "font",
+      "role": "type",
+      "source": "assets/fonts/SalesforceSans-Light.woff",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "sfc/assets/fonts/ (declared by the theme)",
+      "cleared": "final"
+    },
+    {
+      "id": "salesforce-sans-light-italic",
+      "kind": "font",
+      "role": "type",
+      "source": "assets/fonts/SalesforceSans-LightItalic.woff",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "sfc/assets/fonts/ (declared by the theme)",
+      "cleared": "final"
+    },
+    {
+      "id": "salesforce-sans-regular",
+      "kind": "font",
+      "role": "type",
+      "source": "assets/fonts/SalesforceSans-Regular.woff",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "sfc/assets/fonts/ (declared by the theme)",
+      "cleared": "final"
+    },
+    {
+      "id": "salesforce-sans-semibold",
+      "kind": "font",
+      "role": "type",
+      "source": "assets/fonts/SalesforceSans-Semibold.woff",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "sfc/assets/fonts/ (declared by the theme)",
+      "cleared": "final"
+    },
+    {
+      "id": "salesforce-sans-thin",
+      "kind": "font",
+      "role": "type",
+      "source": "assets/fonts/SalesforceSans-Thin.woff",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "sfc/assets/fonts/ (declared by the theme)",
+      "cleared": "final"
+    },
+    {
+      "id": "salesforce-sans-thin-italic",
+      "kind": "font",
+      "role": "type",
+      "source": "assets/fonts/SalesforceSans-ThinItalic.woff",
+      "license": "Salesforce brand asset for internal use; follow the Brand Central usage rules",
+      "usedIn": "sfc/assets/fonts/ (declared by the theme)",
+      "cleared": "final"
+    }
+  ]
+}

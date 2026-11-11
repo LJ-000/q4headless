@@ -1,0 +1,73 @@
+/* kinetic-type: reads only --sfc-* theme variables. One line of display type; override font-size
+   on the root to fit your layout. */
+
+[data-sfc="kinetic-type"] {
+  margin: 0;
+  color: var(--sfc-ink);
+  font: 600 clamp(32px, 5vw, 72px) / 1.12 var(--sfc-font-display);
+  letter-spacing: -0.01em;
+}
+
+[data-sfc="kinetic-type"] .sfc-kt-word {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+/* word-swap: the slot is one grid cell, so every word stacks in the same place. It clips the roll,
+   with a little padding so descenders and accents are not cut. */
+[data-sfc="kinetic-type"] .sfc-kt-slot {
+  display: inline-grid;
+  justify-items: start;
+  vertical-align: bottom;
+  overflow: clip;
+  padding-block: 0.12em;
+  margin-block: -0.12em;
+  color: var(--sfc-accent);
+}
+
+[data-sfc="kinetic-type"] .sfc-kt-slot.is-sized {
+  width: calc(var(--sfc-kt-w) * 1em);
+}
+
+[data-sfc="kinetic-type"] .sfc-kt-slot-word {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+
+/* scramble: words never break inside; each letter box is locked to its final width by the script. */
+[data-sfc="kinetic-type"] .sfc-kt-wordwrap {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+[data-sfc="kinetic-type"] .sfc-kt-char:not(.sfc-kt-space) {
+  display: inline-block;
+  text-align: center;
+}
+
+[data-sfc="kinetic-type"][data-sfc-effect="scramble"] {
+  font-kerning: none;
+}
+
+[data-sfc="kinetic-type"] .sfc-kt-char.is-glyph {
+  color: var(--sfc-accent);
+}
+
+/* tracking-collapse: one line that never wraps, so line breaks cannot change mid-tween. */
+[data-sfc="kinetic-type"] .sfc-kt-line {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+[data-sfc="kinetic-type"] .sfc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

@@ -1,0 +1,75 @@
+/* arch-flow: reads only --sfc-* theme variables. Nodes are HTML boxes on a solid fill; the connectors
+   and pulses are one SVG under them. GSAP owns the nodes' transform (centering and scale) and their
+   left/top while they grow, so the CSS sets neither transform nor transition on them. */
+
+[data-sfc="arch-flow"] {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  color: var(--sfc-ink);
+  font: 400 clamp(13px, 1.25vw, 16px) / 1.3 var(--sfc-font-body);
+}
+
+[data-sfc="arch-flow"] .sfc-arch { position: relative; width: 100%; }
+[data-sfc="arch-flow"] .sfc-wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+[data-sfc="arch-flow"] .sfc-edge {
+  fill: none;
+  stroke: var(--sfc-ink-muted);
+  stroke-opacity: 0.55;
+  stroke-width: 2;
+  stroke-dasharray: 1 1;
+}
+/* A short bright dash. The JS sets its dasharray and moves it along the connector with the offset. */
+[data-sfc="arch-flow"] .sfc-pulse {
+  fill: none;
+  stroke: var(--sfc-accent);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+[data-sfc="arch-flow"] .sfc-node {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  padding: 0.8em 1em;
+  background: var(--sfc-surface);
+  color: var(--sfc-ink);
+  border: 1px solid var(--sfc-surface-border);
+  border-radius: calc(var(--sfc-radius) * 0.75);
+  box-shadow: var(--sfc-shadow);
+}
+[data-sfc="arch-flow"] .sfc-node-label { font: 600 1.05em / 1.2 var(--sfc-font-display); }
+[data-sfc="arch-flow"] .sfc-node-product {
+  font: 600 0.8em / 1.2 var(--sfc-font-body);
+  letter-spacing: 0.02em;
+  color: var(--sfc-ink-muted);
+}
+/* Lights up for a moment when a pulse arrives. A border, not a glow. */
+[data-sfc="arch-flow"] .sfc-node-ring {
+  position: absolute;
+  inset: -4px;
+  border: 2px solid var(--sfc-accent);
+  border-radius: calc(var(--sfc-radius) * 0.75 + 4px);
+  pointer-events: none;
+}
+
+/* The meter is a plain figure, centered under the diagram and sized as a caption figure.
+   It has a solid --sfc-bg fill, so its contrast never depends on the host page. */
+[data-sfc="arch-flow"] .sfc-meter {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.5rem 1.25rem;
+  background: var(--sfc-bg);
+  border-radius: var(--sfc-radius);
+  text-align: center;
+}
+[data-sfc="arch-flow"] .sfc-meter .sfc-num { font: 600 clamp(36px, 4.2vw, 64px) / 1 var(--sfc-font-display); font-variant-numeric: tabular-nums; }
+[data-sfc="arch-flow"] .sfc-meter .sfc-label { color: var(--sfc-ink-muted); }

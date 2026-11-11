@@ -1,0 +1,90 @@
+/* one-take: the engine styles (SFC.oneTake). Colors come only from the theme's --sfc-* variables, plus #000B2E, the
+   Brand Central deep navy, which has no theme variable.
+   Two layouts share one DOM:
+   - the base rules are the static stacked page (no JS, reduced motion, print, narrow screens);
+   - html.ot-live puts every area on one world plane that a camera moves over (one-take.js).
+   An area is a size container (container-type: inline-size), so page.css can size type and gaps in cqw
+   and get the same proportions on the 1920 px world and on a 1280 px stacked page. */
+
+/* ---------- static stacked page (the default) ---------- */
+
+.ot { position: relative; }
+.ot-area {
+  position: relative;
+  box-sizing: border-box;
+  container-type: inline-size;
+}
+.ot-route, .ot-cursor, .ot-ground { display: none; }
+.ot-tagline { margin: 0; padding: 4rem 6vw 8rem; font: 600 clamp(40px, 6vw, 96px) / 1.05 var(--sfc-font-display); letter-spacing: -0.02em; }
+.ot-tagline span { display: inline-block; }
+
+/* ---------- the live world ---------- */
+
+html.ot-live, html.ot-live body { overscroll-behavior: none; background: #000B2E; }
+/* Hidden until the world is built, so the stacked page never flashes before the camera takes over. */
+html.ot-live:not(.ot-ready) .ot { visibility: hidden; }
+/* The scroll length is set by one-take.js from the timeline (seconds x px per second + one screen). */
+html.ot-live .ot { position: relative; }
+html.ot-live .ot-view {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: #000B2E;
+}
+/* The 1920 x 1080 frame, scaled to fit the window (contain) by --ot-scale. */
+html.ot-live .ot-root {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1920px;
+  height: 1080px;
+  margin: -540px 0 0 -960px;
+  overflow: hidden;
+  transform: scale(var(--ot-scale, 1));
+  background: var(--sfc-bg);
+}
+/* Screen-space ground: a soft vignette toward the deep navy at the edges. It never moves. */
+html.ot-live .ot-ground {
+  display: block;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 120% at 50% 45%, var(--sfc-bg) 55%, #000B2E 100%);
+}
+/* The rig is the frame and its stage (.ot-world) is the world plane, written by camera-rig. The rig's own
+   background would hide the ground, so it is cleared here. */
+html.ot-live .ot-rig { position: absolute; inset: 0; width: 1920px; height: 1080px; background: transparent; }
+html.ot-live .ot-world { position: relative; }
+html.ot-live .ot-area { position: absolute; }
+html.ot-live .ot-tagline { position: absolute; padding: 0; font-size: 220px; letter-spacing: -0.03em; white-space: nowrap; }
+
+/* The route the camera took, drawn on during the last pull-back. Under every area. */
+html.ot-live .ot-route {
+  display: block;
+  position: absolute;
+  left: 0; top: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+html.ot-live .ot-route path {
+  fill: none;
+  stroke: var(--sfc-accent);
+  stroke-opacity: 0.6;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 1;
+}
+
+/* The hand. Screen space, drawn above the world. */
+html.ot-live .ot-cursor {
+  display: block;
+  position: absolute;
+  left: 0; top: 0;
+  width: 34px; height: 44px;
+  transform-origin: 3px 2px;
+  pointer-events: none;
+  z-index: 5;
+  visibility: hidden;
+}
+.ot-cursor path { fill: var(--sfc-ink); stroke: var(--sfc-bg); stroke-width: 1.6; stroke-linejoin: round; }

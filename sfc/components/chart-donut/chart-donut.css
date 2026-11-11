@@ -1,0 +1,85 @@
+/* chart-donut: reads only --sfc-* theme variables. The JS writes the ring, the center and the legend.
+   The center is plain text; the rules below size it for the ring's hole. */
+
+[data-sfc="chart-donut"] {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 1.25rem 1.5rem;
+  background: var(--sfc-bg);
+  color: var(--sfc-ink);
+  border: 1px solid var(--sfc-surface-border);
+  border-radius: var(--sfc-radius);
+  font: 400 clamp(14px, 1.4vw, 17px) / 1.35 var(--sfc-font-body);
+}
+
+[data-sfc="chart-donut"] .sfc-title {
+  margin-bottom: 1rem;
+  font: 600 clamp(18px, 1.9vw, 24px) / 1.2 var(--sfc-font-display);
+  letter-spacing: -0.01em;
+}
+
+[data-sfc="chart-donut"] .sfc-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem 2rem;
+}
+
+[data-sfc="chart-donut"] .sfc-ring {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(180px, 22vw, 300px);
+  aspect-ratio: 1;
+}
+[data-sfc="chart-donut"] svg { display: block; width: 100%; height: 100%; }
+[data-sfc="chart-donut"] circle { fill: none; stroke-width: 22; }
+[data-sfc="chart-donut"] .sfc-track { stroke: var(--sfc-surface-border); }
+[data-sfc="chart-donut"] .sfc-seg { stroke-linecap: butt; }
+
+/* The hole is 58% of the ring wide, so the text stays clear of the strokes. */
+[data-sfc="chart-donut"] .sfc-center {
+  position: absolute;
+  inset: 21%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15em;
+  padding: 0;
+  background: transparent;
+  border-radius: 50%;
+  text-align: center;
+}
+[data-sfc="chart-donut"] .sfc-center .sfc-num {
+  font: 600 clamp(26px, 3vw, 46px) / 1 var(--sfc-font-display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--sfc-ink);
+}
+[data-sfc="chart-donut"] .sfc-center .sfc-label {
+  font: 400 clamp(12px, 1.1vw, 14px) / 1.2 var(--sfc-font-body);
+  color: var(--sfc-ink-muted);
+}
+
+[data-sfc="chart-donut"] .sfc-legend {
+  flex: 1 1 200px;
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+[data-sfc="chart-donut"] .sfc-legend li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.6rem;
+}
+[data-sfc="chart-donut"] .sfc-swatch { width: 12px; height: 12px; border-radius: 3px; }
+[data-sfc="chart-donut"] .sfc-name { color: var(--sfc-ink); }
+[data-sfc="chart-donut"] .sfc-pct {
+  font: 600 1em / 1 var(--sfc-font-body);
+  font-variant-numeric: tabular-nums;
+  color: var(--sfc-ink-muted);
+}

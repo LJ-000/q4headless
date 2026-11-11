@@ -1,0 +1,103 @@
+/* agent-chat: reads only --sfc-* theme variables. Nothing here hides content: the JS sets the start
+   state of each bubble, so without JS (or in print) the whole transcript shows. */
+
+[data-sfc="agent-chat"] {
+  --sfc-chat-user-ink: var(--sfc-ink);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-sizing: border-box;
+  width: min(100%, 520px);
+  padding: 1.25rem;
+  background: var(--sfc-bg);
+  color: var(--sfc-ink);
+  border-radius: var(--sfc-radius);
+  font: 400 clamp(15px, 1.5vw, 18px) / 1.4 var(--sfc-font-body);
+}
+
+/* The user bubble is --sfc-accent-2 with --sfc-ink on the dark surface (white on #066AFE, 4.67:1).
+   On the light surface --sfc-accent-2 is dark and --sfc-ink is darker still (about 2:1), so the text
+   there takes --sfc-bg, which is white on that surface. The JS marks which surface it sits on. */
+[data-sfc="agent-chat"][data-chat-surface="light"] {
+  --sfc-chat-user-ink: var(--sfc-bg);
+}
+
+[data-sfc="agent-chat"] .sfc-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  break-inside: avoid;
+}
+[data-sfc="agent-chat"] .sfc-row-user { justify-items: end; }
+[data-sfc="agent-chat"] .sfc-row-agent { justify-items: start; }
+/* Typing indicator and bubble share one grid cell, so the row never changes height. */
+[data-sfc="agent-chat"] .sfc-row > * { grid-area: 1 / 1; }
+
+[data-sfc="agent-chat"] .sfc-bubble {
+  box-sizing: border-box;
+  max-width: 85%;
+  padding: 0.65em 0.9em;
+  border-radius: var(--sfc-radius);
+  overflow-wrap: anywhere;
+}
+[data-sfc="agent-chat"] .sfc-agent {
+  background: var(--sfc-surface);
+  color: var(--sfc-ink);
+  border: 1px solid var(--sfc-surface-border);
+  border-bottom-left-radius: 4px;
+}
+[data-sfc="agent-chat"] .sfc-user {
+  background: var(--sfc-accent-2);
+  color: var(--sfc-chat-user-ink);
+  border-bottom-right-radius: 4px;
+}
+
+[data-sfc="agent-chat"] .sfc-who {
+  display: block;
+  margin-bottom: 0.15em;
+  font: 600 0.78em / 1.2 var(--sfc-font-body);
+  letter-spacing: 0.02em;
+  color: var(--sfc-ink-muted);
+}
+[data-sfc="agent-chat"] .sfc-text { display: block; }
+
+/* Stat card inside an agent bubble. It sits on --sfc-bg, so it reads as a card on the bubble. */
+[data-sfc="agent-chat"] .sfc-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  margin-top: 0.6em;
+  padding: 0.65em 0.85em;
+  background: var(--sfc-bg);
+  color: var(--sfc-ink);
+  border: 1px solid var(--sfc-surface-border);
+  border-radius: calc(var(--sfc-radius) * 0.6);
+}
+[data-sfc="agent-chat"] .sfc-widget-value {
+  font: 600 1.7em / 1.1 var(--sfc-font-display);
+  font-variant-numeric: tabular-nums;
+}
+[data-sfc="agent-chat"] .sfc-widget-label {
+  font-size: 0.85em;
+  color: var(--sfc-ink-muted);
+}
+
+/* Typing indicator: hidden by default, the timeline fades it in and out. Three dots. */
+[data-sfc="agent-chat"] .sfc-typing {
+  opacity: 0;
+  display: inline-flex;
+  align-self: start; /* sits where the reply's first line will be, not stretched to the reply's height */
+  gap: 5px;
+  align-items: center;
+  padding: 0.85em 1em;
+  background: var(--sfc-surface);
+  border: 1px solid var(--sfc-surface-border);
+  border-radius: var(--sfc-radius);
+  border-bottom-left-radius: 4px;
+}
+[data-sfc="agent-chat"] .sfc-dot {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--sfc-ink-muted);
+}

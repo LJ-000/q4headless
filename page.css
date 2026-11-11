@@ -1,0 +1,292 @@
+html, body { margin: 0; background: var(--sfc-bg); }
+body { font: 400 18px/1.5 var(--sfc-font-body); color: var(--sfc-ink); }
+img { display: block; }
+
+/* The page's own look. Colors come only from the theme's --sfc-* variables.
+   Cascade rule: a rule that exists only for the stacked page (a min-height, a width in vw, a gap between
+   areas) goes under html.ot-static, and one that exists only under the camera goes under html.ot-live. Never
+   write it loose: an unscoped #id once made a live hero measure 6552 px. What is left loose is shared by both.
+   Every size is in cqw (a share of the area's width), with a floor in px for the stacked page. On the
+   1920 px world 1cqw is 19.2 px; on a 1280 px stacked page it is 12.8 px, so type and gaps keep their
+   proportions in both layouts. Components size their type with vw clamps, so each one is pinned below. */
+
+@font-face {
+  font-family: "Salesforce Sans";
+  src: url("sfc/assets/fonts/SalesforceSans-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- grounds: one brand gradient per area, the plain palette underneath ---------- */
+
+.ground-evening { background: url("assets/gradient-evening.svg") center / cover no-repeat, var(--sfc-bg); }
+.ground-morning { background: url("assets/gradient-morning.svg") center / cover no-repeat, var(--sfc-surface); }
+.ot-area { border-radius: 28px; box-shadow: var(--sfc-shadow); }
+.ot-body {
+  box-sizing: border-box;
+  height: 100%;
+  padding: max(28px, 6cqw) max(24px, 7cqw);
+  display: grid;
+  align-content: center;
+  gap: max(20px, 2.4cqw);
+}
+
+/* ---------- type ---------- */
+
+.ot-logo { position: absolute; left: 7cqw; top: 4.5cqw; width: max(96px, 6.9cqw); height: auto; }
+.ot-eyebrow {
+  display: inline-block;
+  justify-self: start;
+  margin: 0;
+  padding: 0.6em 1.2em;
+  border: 1px solid var(--sfc-surface-border);
+  border-radius: 999px;
+  font: 600 max(11px, 0.95cqw) / 1.2 var(--sfc-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.ot-h1 { margin: 0; max-width: 13ch; text-wrap: balance; font-size: max(38px, 4.5cqw); line-height: 1.04; letter-spacing: -0.025em; }
+.ot-h2 { margin: 0; max-width: 16ch; text-wrap: balance; font: 600 max(28px, 3.4cqw) / 1.08 var(--sfc-font-display); letter-spacing: -0.02em; }
+.ot-lede { margin: 0; max-width: 34ch; text-wrap: pretty; font: 300 max(17px, 1.5cqw) / 1.45 var(--sfc-font-body); }
+.ot-note { margin: 0; font: 400 max(12px, 0.95cqw) / 1.4 var(--sfc-font-body); color: var(--sfc-ink-muted); }
+
+/* The pill that carries into the next area. It is a link, so the stacked page can use it too. */
+.ot-chip {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0.75em 1.35em;
+  border-radius: 999px;
+  background: var(--sfc-accent-2);
+  color: var(--sfc-ink);
+  font: 600 max(15px, 1.25cqw) / 1.2 var(--sfc-font-body);
+  text-decoration: none;
+  white-space: nowrap;
+}
+[data-sfc-surface="light"] .ot-chip { color: var(--sfc-bg); }
+
+.ot-copy { display: grid; gap: max(16px, 1.8cqw); align-content: center; justify-items: start; }
+
+/* The card an incoming chip becomes. */
+.ot-card {
+  box-sizing: border-box;
+  padding: max(20px, 2.4cqw);
+  border: 1px solid var(--sfc-surface-border);
+  border-radius: var(--sfc-radius);
+  box-shadow: var(--sfc-shadow);
+  display: grid;
+  gap: max(14px, 1.6cqw);
+}
+[data-sfc-surface="light"] .ot-card { background: var(--sfc-bg); }
+[data-sfc-surface="dark"] .ot-card { background: var(--sfc-surface); }
+
+/* ---------- area 1: hero ---------- */
+
+/* Stacked page only: under the camera each area has the size the config gives it. */
+html.ot-static .ot-hero { min-height: min(100vh, 900px); }
+.ot-hero .ot-body { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-content: stretch; align-items: center; }
+.ot-hero-copy { display: grid; gap: max(20px, 2.2cqw); padding-top: 5cqw; }
+.ot-hero [data-sfc="kinetic-type"] { font-size: max(38px, 4.5cqw); }
+/* The form is the shape layer: form-frame draws subtract-3 filled with a brand gradient as inline SVG (a CSS
+   mask would go blank when the page is opened from disk) and Agent Astro stands on it, facing the headline. */
+.ot-stand { position: relative; justify-self: end; align-self: end; width: 28cqw; aspect-ratio: 202 / 215; margin-bottom: -6cqw; margin-right: 1cqw; }
+.ot-stand .ot-astro { position: absolute; left: 11%; bottom: 18%; width: 78%; height: auto; }
+/* Sparkles sit in the gutters, never over text: one warm anchor and one cool pair. */
+.ot-sparkles { position: absolute; right: 8cqw; top: 6cqw; width: 12cqw; height: 11cqw; pointer-events: none; }
+.ot-sparkles img { position: absolute; height: auto; }
+.ot-spark-main { left: 0; top: 1.6cqw; width: 7.6cqw; }
+.ot-spark-a, .ot-spark-b { left: 6.6cqw; top: 0; width: 3.9cqw; }
+.ot-spark-b { opacity: 0; }
+
+/* ---------- area 2: the result ---------- */
+
+.ot-proof .ot-card { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: center; gap: max(20px, 3cqw); }
+.ot-proof [data-sfc="text-reveal"] { font-size: max(28px, 3.6cqw); }
+.ot-proof [data-sfc="chart-donut"] { font-size: max(13px, 1.3cqw); }
+.ot-proof [data-sfc="chart-donut"] .sfc-title { font-size: max(15px, 1.7cqw); }
+.ot-proof [data-sfc="chart-donut"] .sfc-ring { width: max(150px, 20cqw); }
+.ot-proof [data-sfc="chart-donut"] .sfc-center .sfc-num { font-size: max(22px, 2.8cqw); }
+.ot-proof [data-sfc="chart-donut"] .sfc-center .sfc-label { font-size: max(11px, 0.9cqw); }
+
+
+/* ---------- narrow areas on the stacked page ---------- */
+
+@container (max-width: 900px) {
+  .ot-body, .ot-hero .ot-body { grid-template-columns: minmax(0, 1fr); }
+  .ot-proof .ot-card { grid-template-columns: minmax(0, 1fr); }
+  .ot-stand { justify-self: center; width: min(60cqw, 320px); margin-bottom: 0; }
+  .ot-sparkles { display: none; }
+  .ot-logo { position: static; margin-bottom: 18px; }
+}
+
+/* ---------- the component sections below the one-take ---------- */
+
+/* They are ordinary stacked sections. Sizes use clamp() on the viewport, not cqw: they live outside the world. */
+
+.mx-section { position: relative; box-sizing: border-box; padding: clamp(56px, 9vw, 140px) clamp(20px, 6vw, 120px); }
+.mx-wrap { max-width: 1320px; margin: 0 auto; }
+.mx-eyebrow {
+  display: inline-block;
+  margin: 0 0 24px;
+  padding: 0.6em 1.2em;
+  border: 1px solid var(--sfc-surface-border);
+  border-radius: 999px;
+  font: 600 13px / 1.2 var(--sfc-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.mx-h2 { margin: 0 0 clamp(20px, 3vw, 40px); max-width: 18ch; text-wrap: balance; font: 600 clamp(30px, 3.6vw, 56px) / 1.08 var(--sfc-font-display); letter-spacing: -0.02em; }
+.mx-lede { margin: 0 0 24px; max-width: 36ch; text-wrap: pretty; font: 300 clamp(18px, 1.6vw, 24px) / 1.45 var(--sfc-font-body); }
+.mx-note { margin: 0; font-size: 14px; color: var(--sfc-ink-muted); }
+
+.mx-bento { --sfc-bento-row: minmax(172px, auto); }
+.mx-bento h3 { margin: 0; font: 600 clamp(20px, 1.8vw, 28px) / 1.2 var(--sfc-font-display); }
+.mx-bento p { margin: 0; max-width: 40ch; font-size: clamp(16px, 1.3vw, 20px); }
+/* The big number is plain type straight on the tile. */
+.mx-bento .mx-stat { display: flex; flex-direction: column; gap: 0.3em; }
+.mx-bento .mx-stat b { font: 600 clamp(64px, 7vw, 112px) / 1 var(--sfc-font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.mx-bento .mx-stat span { color: var(--sfc-ink-muted); }
+
+.mx-product { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: center; gap: clamp(24px, 4vw, 72px); }
+.mx-product .mx-h2 { max-width: 14ch; }
+.mx-trend { max-width: 520px; }
+/* The screen is plain HTML on solid fills, so it stays sharp at any size and passes the contrast check. */
+.mx-ui { box-sizing: border-box; height: 100%; padding: 4% 5%; display: grid; grid-template-rows: auto auto 1fr; gap: 4%; background: var(--sfc-bg); color: var(--sfc-ink); font: 400 clamp(10px, 1vw, 16px) / 1.35 var(--sfc-font-body); }
+.mx-ui h3 { margin: 0; font: 600 1.5em / 1.15 var(--sfc-font-display); }
+.mx-ui-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4%; align-content: start; }
+.mx-ui-cards div { padding: 8% 10%; border-radius: 10px; background: var(--sfc-surface); border: 1px solid var(--sfc-surface-border); }
+.mx-ui-cards b { display: block; font: 600 1.9em / 1.1 var(--sfc-font-display); }
+.mx-ui-cards span, .mx-ui-list span { color: var(--sfc-ink-muted); }
+.mx-ui-cards span { font-size: 0.9em; }
+.mx-ui-list { display: grid; gap: 3%; align-content: start; }
+.mx-ui-list div { display: flex; justify-content: space-between; padding: 2.2% 3%; border-radius: 8px; background: var(--sfc-surface); border: 1px solid var(--sfc-surface-border); }
+
+.mx-close { display: grid; place-items: center; }
+.mx-beam { box-sizing: border-box; width: min(100%, 880px); padding: clamp(28px, 4vw, 64px); }
+.mx-beam .mx-h2 { max-width: 20ch; }
+
+@media (max-width: 860px) {
+  .mx-product { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ======================================================================
+   This page: the four pillars in area 2, then the selector, notes, tables.
+   ====================================================================== */
+
+/* ---------- area 2: the four pillars ---------- */
+
+.ot-proof .ot-card { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
+.ot-pillars { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: max(12px, 1.2cqw); }
+.ot-pillars li { display: grid; gap: 0.4em; align-content: start; padding: max(14px, 1.3cqw); border-radius: 12px; background: var(--sfc-surface); border: 1px solid var(--sfc-surface-border); }
+.ot-pillars b { font: 600 max(18px, 1.6cqw) / 1.2 var(--sfc-font-display); }
+.ot-pillars span { font: 300 max(15px, 1.15cqw) / 1.4 var(--sfc-font-body); }
+@container (max-width: 900px) {
+  .ot-pillars { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- sections: shared ---------- */
+
+.mx-wrap { position: relative; z-index: 1; }
+.ground-flat { background: var(--sfc-bg); }
+.mx-h2-sub { margin-top: clamp(40px, 5vw, 72px); }
+.mx-h2 { max-width: 22ch; }
+
+/* Sparkles: gutters only, clamped to the content column (1320 px wide, 24 px gap), gone when the gutter closes. */
+.mx-sparks { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.mx-spark { position: absolute; height: auto; }
+.mx-spark-l { top: 14%; width: 84px; left: clamp(6px, 5%, calc(50% - 684px - 84px)); }
+.mx-spark-r { top: 56%; width: 56px; right: clamp(6px, 6%, calc(50% - 684px - 56px)); }
+@media (max-width: 1500px) { .mx-sparks { display: none; } }
+
+/* ---------- the selector ---------- */
+
+.sel-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0 0 20px; }
+.sel-card {
+  display: grid; gap: 8px; align-content: start; text-align: left; cursor: pointer;
+  padding: 20px 22px; font: inherit; color: var(--sfc-ink);
+  background: var(--sfc-bg); border: 1px solid var(--sfc-surface-border); border-radius: var(--sfc-radius);
+}
+.sel-card[aria-selected="true"] { background: var(--sfc-surface); border-color: var(--sfc-accent); box-shadow: 0 0 0 2px var(--sfc-accent); }
+.sel-card:focus-visible { outline: 3px solid var(--sfc-accent-2); outline-offset: 3px; }
+.sel-name { font: 600 clamp(20px, 1.8vw, 26px) / 1.15 var(--sfc-font-display); }
+.sel-hear { font: 300 clamp(15px, 1.2vw, 18px) / 1.4 var(--sfc-font-body); color: var(--sfc-ink-muted); }
+
+.sel-panels { display: grid; }
+.sel-panel {
+  box-sizing: border-box; padding: clamp(20px, 2.4vw, 36px); margin-bottom: 16px;
+  background: var(--sfc-bg); border: 1px solid var(--sfc-surface-border); border-radius: var(--sfc-radius); box-shadow: var(--sfc-shadow);
+}
+.js .sel-panel.is-off { display: none; }
+@media print { .js .sel-panel.is-off { display: block !important; } }
+.sel-cols { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: clamp(20px, 3vw, 48px); }
+.sel-cols-2 { grid-template-columns: 1.4fr 1fr; }
+.sel-panel h3, .sel-ask4 h3, .ex-col h3 {
+  margin: 0 0 12px; font: 600 13px / 1.2 var(--sfc-font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--sfc-ink-muted);
+}
+.sel-ask { margin: 0 0 14px; font: 600 clamp(20px, 1.7vw, 26px) / 1.3 var(--sfc-font-display); }
+.sel-eg { margin: 0; font: 300 clamp(16px, 1.3vw, 19px) / 1.5 var(--sfc-font-body); }
+.sel-list { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; font: 300 clamp(16px, 1.3vw, 19px) / 1.45 var(--sfc-font-body); }
+.sel-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.sel-chips li { padding: 0.5em 0.95em; border-radius: 999px; background: var(--sfc-surface); border: 1px solid var(--sfc-surface-border); font: 600 15px / 1.2 var(--sfc-font-body); }
+
+.sel-step { margin: 0 0 8px; font: 600 13px / 1.2 var(--sfc-font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--sfc-ink-muted); }
+.sel-panel h3.sel-embed-h { margin: 0 0 14px; font: 600 clamp(24px, 2.2vw, 34px) / 1.15 var(--sfc-font-display); letter-spacing: -0.01em; text-transform: none; color: var(--sfc-ink); }
+.sel-embed-p { margin: 0 0 12px; max-width: 72ch; font: 300 clamp(17px, 1.4vw, 20px) / 1.5 var(--sfc-font-body); }
+
+.sel-path { margin: 8px 0 0; padding: 18px 22px; border-radius: 12px; background: var(--sfc-accent-2); color: var(--sfc-bg); font: 300 clamp(16px, 1.3vw, 19px) / 1.5 var(--sfc-font-body); }
+.sel-path:empty { display: none; }
+.sel-path b { font-weight: 600; }
+
+.sel-ask4 { margin-top: clamp(32px, 4vw, 56px); }
+.sel-ask4 ol { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; max-width: 70ch; font: 300 clamp(16px, 1.3vw, 19px) / 1.45 var(--sfc-font-body); }
+
+/* ---------- foundation, tools, HXL ---------- */
+
+.mx-flow { max-width: 1180px; margin-top: 8px; }
+.mx-chat { max-width: 560px; }
+.mx-product > [data-sfc-opts*='"phone"'] { max-width: 300px; justify-self: center; width: 100%; }
+.mx-ui-card { gap: 10px; align-content: start; grid-template-rows: none; font-size: clamp(9px, 0.95vw, 14px); }
+.mx-ui-field { display: flex; justify-content: space-between; gap: 8px; padding: 8% 6%; border-radius: 8px; background: var(--sfc-surface); border: 1px solid var(--sfc-surface-border); }
+.mx-ui-field span { color: var(--sfc-ink-muted); }
+.mx-ui-btn { margin-top: 4px; padding: 8% 0; text-align: center; border-radius: 999px; background: var(--sfc-accent-2); color: var(--sfc-ink); font-weight: 600; }
+
+/* ---------- AgentExchange ---------- */
+
+.ex-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.ex-col { padding: clamp(20px, 2.4vw, 32px); border-radius: var(--sfc-radius); background: var(--sfc-bg); border: 1px solid var(--sfc-surface-border); }
+.ex-scale { margin-top: 24px; max-width: 80ch; color: var(--sfc-ink); }
+
+/* ---------- reference tables ---------- */
+
+.ref-scroll { overflow-x: auto; margin: 0 0 24px; }
+.ref-scroll:focus-visible { outline: 3px solid var(--sfc-accent); outline-offset: 3px; }
+.ref-table { width: 100%; min-width: 680px; border-collapse: collapse; font: 300 clamp(15px, 1.15vw, 18px) / 1.45 var(--sfc-font-body); }
+.ref-table th, .ref-table td { text-align: left; vertical-align: top; padding: 14px 16px; border-bottom: 1px solid var(--sfc-surface-border); }
+.ref-table thead th { font: 600 13px / 1.2 var(--sfc-font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--sfc-ink-muted); }
+.ref-table tbody th { font: 600 clamp(16px, 1.25vw, 19px) / 1.3 var(--sfc-font-body); }
+.ref-table small { display: block; margin-top: 6px; font: 300 15px / 1.4 var(--sfc-font-body); color: var(--sfc-ink-muted); }
+
+/* ---------- close ---------- */
+
+.mx-recap { margin: 0 0 24px; padding-left: 1.3em; display: grid; gap: 6px; font: 300 clamp(17px, 1.4vw, 21px) / 1.4 var(--sfc-font-body); }
+
+@media (max-width: 860px) {
+  .sel-row, .sel-cols, .sel-cols-2, .ex-cols { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- build plan: echoes the four pillars in the opening ---------- */
+
+.plan-steps { list-style: none; margin: 0 0 24px; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(12px, 1.4vw, 20px); }
+.plan-steps li { position: relative; display: grid; gap: 10px; align-content: start; padding: clamp(18px, 1.8vw, 26px); border-radius: 12px; background: var(--sfc-surface); border: 1px solid var(--sfc-surface-border); }
+.plan-n { font: 600 clamp(36px, 3.6vw, 56px) / 1 var(--sfc-font-display); color: var(--sfc-accent-2); }
+.plan-steps h3 { margin: 0; font: 600 clamp(20px, 1.7vw, 26px) / 1.2 var(--sfc-font-display); }
+.plan-steps p { margin: 0; font: 300 clamp(15px, 1.15vw, 18px) / 1.45 var(--sfc-font-body); }
+.plan-tag { justify-self: start; padding: 0.35em 0.8em; border-radius: 999px; background: var(--sfc-accent-2); color: var(--sfc-bg); font: 600 13px / 1.2 var(--sfc-font-body); letter-spacing: 0.08em; text-transform: uppercase; }
+.plan-note { margin-bottom: 20px; color: var(--sfc-ink); }
+.plan-back { display: inline-flex; padding: 0.75em 1.35em; border-radius: 999px; background: var(--sfc-accent-2); color: var(--sfc-bg); font: 600 16px / 1.2 var(--sfc-font-body); text-decoration: none; }
+.plan-back:focus-visible { outline: 3px solid var(--sfc-ink); outline-offset: 3px; }
+
+@media (max-width: 1100px) { .plan-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 860px) { .plan-steps { grid-template-columns: minmax(0, 1fr); } }

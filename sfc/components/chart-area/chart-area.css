@@ -1,0 +1,63 @@
+/* chart-area: reads only --sfc-* theme variables. The JS writes the SVG, the value chip and the labels;
+   all text is HTML on solid fills, so contrast is measurable. */
+
+[data-sfc="chart-area"] {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 1.25rem 1.5rem 1rem;
+  background: var(--sfc-bg);
+  color: var(--sfc-ink);
+  border: 1px solid var(--sfc-surface-border);
+  border-radius: var(--sfc-radius);
+  font: 400 clamp(13px, 1.3vw, 16px) / 1.3 var(--sfc-font-body);
+}
+
+[data-sfc="chart-area"] .sfc-title {
+  margin-bottom: 0.75rem;
+  font: 600 clamp(18px, 1.9vw, 24px) / 1.2 var(--sfc-font-display);
+  letter-spacing: -0.01em;
+}
+
+[data-sfc="chart-area"] .sfc-plot { position: relative; }
+[data-sfc="chart-area"] svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+[data-sfc="chart-area"] .sfc-grid line { stroke: var(--sfc-surface-border); stroke-width: 1; }
+[data-sfc="chart-area"] .sfc-grid line.sfc-base { stroke: var(--sfc-ink-muted); stroke-opacity: 0.5; }
+
+[data-sfc="chart-area"] .sfc-stop-top { stop-color: var(--sfc-accent); stop-opacity: 0.36; }
+[data-sfc="chart-area"] .sfc-stop-bottom { stop-color: var(--sfc-accent); stop-opacity: 0; }
+
+[data-sfc="chart-area"] .sfc-line {
+  fill: none;
+  stroke: var(--sfc-accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 1; /* pathLength is 1, so the JS draws the line by moving the offset from 1 to 0 */
+}
+
+[data-sfc="chart-area"] .sfc-point { fill: var(--sfc-bg); stroke: var(--sfc-accent); stroke-width: 2.5; }
+[data-sfc="chart-area"] .sfc-head { fill: var(--sfc-accent); stroke: var(--sfc-bg); stroke-width: 3; }
+
+/* The chip that rides the head. A solid fill, so its text never sits on the translucent area. */
+[data-sfc="chart-area"] .sfc-head-label {
+  position: absolute;
+  padding: 0.32em 0.75em;
+  white-space: nowrap;
+  background: var(--sfc-surface);
+  color: var(--sfc-ink);
+  border: 1px solid var(--sfc-surface-border);
+  border-radius: 999px;
+  font: 600 1.15em / 1.2 var(--sfc-font-body);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+[data-sfc="chart-area"] .sfc-labels { position: relative; height: 1.6em; margin-top: 0.5rem; }
+[data-sfc="chart-area"] .sfc-label {
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+  color: var(--sfc-ink-muted);
+}

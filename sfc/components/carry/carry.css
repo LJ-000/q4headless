@@ -1,0 +1,48 @@
+/* carry: reads only --sfc-* theme variables. SFC.carry itself needs no CSS. These rules style the
+   declarative component and give two optional presets, a chip and a card, that carry well into each
+   other. Without JS (or in print) the card shows and the chip is hidden by the final frame. */
+
+[data-sfc="carry"] {
+  --sfc-carry-chip-ink: var(--sfc-ink);
+  position: relative;
+  color: var(--sfc-ink);
+}
+
+/* On the light surface --sfc-accent-2 is dark blue and --sfc-ink is darker still (about 2:1), so the
+   chip text takes --sfc-bg (white there, about 9.7:1). On the dark surface it is white on #066AFE, 4.67:1. */
+[data-sfc-surface="light"] [data-sfc="carry"],
+[data-sfc="carry"][data-sfc-surface="light"] {
+  --sfc-carry-chip-ink: var(--sfc-bg);
+}
+
+[data-sfc="carry"] .sfc-carry-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  box-sizing: border-box;
+  padding: 0.7em 1.15em;
+  border-radius: 999px;
+  background: var(--sfc-accent-2);
+  color: var(--sfc-carry-chip-ink);
+  font: 600 1rem / 1.2 var(--sfc-font-body);
+  white-space: nowrap;
+}
+
+[data-sfc="carry"] .sfc-carry-card {
+  box-sizing: border-box;
+  padding: 1.5rem 1.75rem;
+  border-radius: var(--sfc-radius);
+  border: 1px solid var(--sfc-surface-border);
+  background: var(--sfc-surface);
+  color: var(--sfc-ink);
+
+}
+[data-sfc="carry"] .sfc-carry-card h3 {
+  margin: 0 0 0.4em;
+  font: 600 1.6rem / 1.15 var(--sfc-font-display);
+}
+[data-sfc="carry"] .sfc-carry-card p {
+  margin: 0;
+  font: 400 1.05rem / 1.45 var(--sfc-font-body);
+  color: var(--sfc-ink-muted);
+}

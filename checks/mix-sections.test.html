@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<meta charset="utf-8">
+<title>mix: the one-take opening hands over to component sections</title>
+<!-- budget-ms: 20000 -->
+<!-- Run with: node "$SF_DESIGN_STACK/tools/browser-test.mjs" checks/mix-sections.test.html
+     scroll-onetake.test.html (same folder) holds the one-take to its grammar: a carry at the seam, rests,
+     speed, determinism. This page checks the other half. The page under test is ../index.html, loaded three
+     times: live (?scroll=off), calm (?motion=reduce) and a 390 px phone (?motion=reduce).
+     It proves that the sections below the one-take mount even though the camera never builds them, that
+     they sit below the one-take's scroll space and not inside the world, that a section holds at most three
+     components, that reduced motion puts every component at its final frame with everything readable, and
+     that nothing scrolls sideways at 1280 px or at 390 px. -->
+<style>
+  body { margin: 0; }
+  iframe { border: 0; display: block; }
+  #live { width: 1920px; height: 1080px; }
+  #calm { width: 1280px; height: 900px; }
+  #phone { width: 390px; height: 800px; }
+</style>
+<output id="result"></output>
+<iframe id="live" src="../index.html?scroll=off"></iframe>
+<iframe id="calm" src="../index.html?motion=reduce"></iframe>
+<iframe id="phone" src="../index.html?motion=reduce"></iframe>
+<script src="harness.js"></script>
+<script>
+  const ready = (id) => new Promise((res) => {
+    const f = document.getElementById(id);
+    const go = () => res(f.contentWindow.__page.then((p) => ({ w: f.contentWindow, d: f.contentDocument, p })));
+    if (f.contentDocument && f.contentDocument.readyState === 'complete' && f.contentWindow.__page) go();
+    else f.addEventListener('load', go, { once: true });
+  });
+  const opacityOf = (el) => {
+    const w = el.ownerDocument.defaultView;
+    let o = 1;
+    for (let n = el; n && n.nodeType === 1; n = n.parentElement) {
+      const cs = w.getComputedStyle(n);
+      if (cs.display === 'none') return 0;
+      o *= Number(cs.opacity);
+    }
+    return w.getComputedStyle(el).visibility === 'hidden' ? 0 : o;
+  };
+  const sectionRoots = (d) => [...d.querySelectorAll('.mx-sections [data-sfc]')];
+
+  test('live: the one-take is built and the sections below it are mounted, outside the world', async () => {
+    const { d, p } = await ready('live');
+    assert.equal(p.onetake.mode, 'live', 'the one-take opening is live');
+    assert.equal(p.onetake.warnings.length, 0, 'warnings: ' + p.onetake.warnings.join(' | '));
+    assert.ok(!d.querySelector('.ot-world .mx-sections'), 'the sections are not inside the world');
+    const roots = sectionRoots(d);
+    assert.ok(roots.length >= 3, 'the sections place components');
+    const mounted = new Set(p.mounts.map((m) => m.root));
+    roots.forEach((el) => assert.ok(mounted.has(el), el.dataset.sfc + ' is mounted'));
+    // The camera does not touch these: they are not among the components the one-take built.
+    const inTake = new Set(p.onetake.comps.map((c) => c.el));
+    roots.forEach((el) => assert.ok(!inTake.has(el), el.dataset.sfc + ' is not driven by the camera'));
+  });
+
+  test('live: the sections start where the one-take ends, so the page keeps scrolling after the film', async () => {
+    const { d } = await ready('live');
+    const main = d.querySelector('main[data-ot]').getBoundingClientRect();
+    const first = d.querySelector('.mx-sections').getBoundingClientRect();
+    assert.ok(first.top >= main.bottom - 1, 'sections start at ' + first.top + ', after the one-take ends at ' + main.bottom);
+    assert.ok(main.height > 2 * 1080, 'the one-take owns scroll space for its timeline: ' + main.height);
+  });
+
+  test('a section holds at most three components (one hero motion at a time)', async () => {
+    const { d } = await ready('calm');
+    d.querySelectorAll('.mx-section').forEach((s) => {
+      const n = s.querySelectorAll('[data-sfc]').length;
+      assert.ok(n <= 3, (s.getAttribute('aria-label') || s.className) + ' holds ' + n + ' components; keep it to two or three');
+    });
+  });
+
+  test('reduced motion: every component, in the opening and below it, is at its final frame and readable', async () => {
+    const { w, d, p } = await ready('calm');
+    assert.ok(w.SFC.reduced());
+    assert.equal(p.onetake.mode, 'static');
+    // A component with no motion (form-frame) has a zero-length timeline: it is always at its final frame.
+    p.mounts.forEach((m) => assert.ok(m.tl.duration() === 0 || m.tl.progress() === 1, m.id + ' is at its final frame'));
+    d.querySelectorAll('.mx-bento > *, .mx-ui, .mx-beam, .mx-trend, [data-carry]').forEach((el) => assert.ok(opacityOf(el) > 0.99, 'visible: ' + (el.className || el.tagName)));
+    const areas = [...d.querySelectorAll('.ot-area')].map((a) => a.getBoundingClientRect());
+    const sections = d.querySelector('.mx-sections').getBoundingClientRect();
+    assert.ok(sections.top >= areas[areas.length - 1].bottom - 1, 'the sections follow the last area');
+  });
+
+  test('nothing scrolls sideways at 1280 px or at 390 px', async () => {
+    for (const id of ['calm', 'phone']) {
+      const { d } = await ready(id);
+      const root = d.scrollingElement;
+      assert.ok(root.scrollWidth <= root.clientWidth + 1, id + ': ' + root.scrollWidth + ' > ' + root.clientWidth);
+    }
+  });
+
+  done();
+</script>
+</html>
