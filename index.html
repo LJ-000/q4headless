@@ -227,26 +227,110 @@
   </section>
 
 
-  <section class="mx-section ground-evening" id="hxl" data-sfc-surface="dark" aria-label="Headless Experience Layer">
-    <div class="mx-sparks" aria-hidden="true">
-      <img class="mx-spark mx-spark-l" src="assets/sparkles-blue-inclined-web.webp" width="1800" height="1920" alt="">
-      <img class="mx-spark mx-spark-r" src="assets/sparkles-yellow-main-web.webp" width="1800" height="1920" alt="">
-    </div>
-    <div class="mx-wrap mx-product">
-      <div>
-        <p class="mx-eyebrow">Headless Experience Layer</p>
-        <h2 class="mx-h2">The answer arrives as an interface, not a paragraph.</h2>
-        <p class="mx-lede">One configuration. The same widget renders natively on each surface: a Block Kit card in Slack, an adaptive card in Teams.</p>
-        <div class="mx-chat" data-sfc="agent-chat" data-sfc-opts='{"agentName":"Agent","messages":[{"from":"user","text":"Can you help me book a car?"},{"from":"agent","text":"Yes. Fill in the form below and I will reserve it."},{"from":"user","text":"Mid-size, Friday pickup."},{"from":"agent","text":"Done. Your confirmation is in the card.","widget":{"type":"stat","value":"Confirmed","label":"mid-size, Friday pickup"}}]}'></div>
+  <section class="mx-section ground-morning" id="how101" data-sfc-surface="light" aria-label="101: how each path works">
+    <div class="mx-wrap">
+      <p class="mx-eyebrow">101 &middot; How it works</p>
+      <h2 class="mx-h2">See your path end to end.</h2>
+      <p class="mx-lede">The same three paths as Step 1. Pick one to see what you bring, how it connects, and what the user sees.</p>
+
+      <div class="sel-row" role="tablist" aria-label="Path" data-sel="start101">
+        <button class="sel-card" role="tab" type="button" id="u-le" aria-controls="d-le" data-pick="le"><span class="sel-name">Bring your MCP server</span><span class="sel-hear">MCP In</span></button>
+        <button class="sel-card" role="tab" type="button" id="u-tr" aria-controls="d-tr" data-pick="tr"><span class="sel-name">Build a new MCP server</span><span class="sel-hear">MCP Out</span></button>
+        <button class="sel-card" role="tab" type="button" id="u-cg" aria-controls="d-cg" data-pick="cg"><span class="sel-name">Build a new experience</span><span class="sel-hear">Experience</span></button>
       </div>
-      <div data-sfc="device-frame" data-sfc-opts='{"device":"phone"}'>
-        <div class="mx-ui mx-ui-card">
-          <h3>Book a car</h3>
-          <div class="mx-ui-field"><span>Class</span><b>Mid-size</b></div>
-          <div class="mx-ui-field"><span>Pickup</span><b>Friday, 9:00</b></div>
-          <div class="mx-ui-field"><span>Return</span><b>Sunday, 18:00</b></div>
-          <div class="mx-ui-btn">Reserve</div>
-        </div>
+
+      <div class="sel-panels" data-panels="101">
+
+        <article class="d-panel" role="tabpanel" id="d-le" aria-labelledby="u-le">
+          <header class="d-head"><p class="d-title">MCP In</p><p class="d-sub">Agentforce calls your MCP server, alongside customer and partner tools.</p></header>
+          <div class="d101">
+            <div class="d-col">
+              <p class="d-label">What you bring</p>
+              <div class="d-card d-card-you"><p class="d-url">https://acme.com/mcp</p><ul class="d-tools"><li>tool-a</li><li>tool-b</li><li>tool-c</li></ul></div>
+              <div class="d-card"><p class="d-url">https://example.com/mcp</p><ul class="d-tools"><li>tool-a</li><li>tool-b</li><li>tool-c</li></ul></div>
+              <div class="d-card"><p class="d-url">https://example.org/mcp</p><ul class="d-tools"><li>tool-a</li><li>tool-b</li><li>tool-c</li></ul></div>
+            </div>
+            <div class="d-col d-mid">
+              <p class="d-label">How it connects</p>
+              <svg class="d-arrow" viewBox="0 0 200 60" aria-hidden="true"><path d="M6 30 H178 M152 8 L186 30 L152 52"/></svg>
+              <div class="d-auth"><p>Named Credential</p><p>External Credential</p><p>Auth Provider <span>(optional)</span></p></div>
+              <div class="d-pack"><p class="d-pack-h">What&rsquo;s packaged</p><ul><li>External Credential</li><li>External Service Registration</li><li>Named Credential</li><li>Permission Set</li></ul></div>
+            </div>
+            <div class="d-col">
+              <p class="d-label">What the user sees</p>
+              <div class="d-chat" data-sfc="agent-chat" data-sfc-opts='{"agentName":"Agentforce","messages":[{"from":"agent","text":"ACV has dropped 11% compared to Q2 last year."},{"from":"user","text":"Are there any red flag phrases appearing in late-stage deals?"},{"from":"agent","text":"There is a 22% increase in the phrase \u201cbudget re-approval\u201d in late-stage deals compared to last quarter. Deals containing these phrases are 3.5x more likely to push to the next fiscal period.","widget":{"type":"stat","value":"3.5x","label":"more likely to push"}},{"from":"user","text":"Create a high priority task for owners of these deals to secure a follow-up meeting."},{"from":"agent","text":"High priority task has been created for owners of late-stage deals with red flag phrases."}]}'></div>
+              <p class="mx-note">Sample conversation and figures.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="d-panel" role="tabpanel" id="d-tr" aria-labelledby="u-tr">
+          <header class="d-head"><p class="d-title">MCP Out</p><p class="d-sub">Outside agents call your Salesforce logic through a Salesforce-hosted MCP server.</p></header>
+          <div class="d101">
+            <div class="d-col">
+              <p class="d-label">What you bring</p>
+              <div class="d-card d-card-you"><p class="d-url">Apex</p><ul class="d-tools"><li>becomes a tool</li></ul></div>
+              <div class="d-card d-card-you"><p class="d-url">Flows</p><ul class="d-tools"><li>becomes a tool</li></ul></div>
+              <div class="d-card d-card-you"><p class="d-url">Named queries</p><ul class="d-tools"><li>becomes a tool</li></ul></div>
+            </div>
+            <div class="d-col d-mid">
+              <p class="d-label">How it connects</p>
+              <svg class="d-arrow" viewBox="0 0 200 60" aria-hidden="true"><path d="M6 30 H178 M152 8 L186 30 L152 52"/></svg>
+              <div class="d-auth"><p>Salesforce-hosted MCP server</p><p>External Client App <span>(optional)</span></p></div>
+              <div class="d-pack"><p class="d-pack-h">What&rsquo;s packaged</p><ul><li>Apex</li><li>Flows</li><li>Named Queries</li><li>External Client App (optional)</li></ul></div>
+            </div>
+            <div class="d-col">
+              <p class="d-label">Who calls in</p>
+              <ul class="d-tools d-clients"><li>First-party clients</li><li>Locally operated agents</li><li>Enterprise SaaS agents</li><li>Chat platforms</li></ul>
+              <div class="d-chat" data-sfc="agent-chat" data-sfc-opts='{"agentName":"Agent","messages":[{"from":"user","text":"What is the status of claim 1042?"},{"from":"agent","text":"Claim 1042 is in review. It was last updated yesterday.","widget":{"type":"stat","value":"In review","label":"claim 1042"}}]}'></div>
+              <p class="mx-note">Sample conversation. The example tool is read only.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="d-panel" role="tabpanel" id="d-cg" aria-labelledby="u-cg">
+          <header class="d-head"><p class="d-title">Experience</p><p class="d-sub">Build once, and show up on any surface.</p></header>
+          <div class="d101 d101-2">
+            <div class="d-col">
+              <p class="d-label">What you build</p>
+              <div class="d-card d-card-you"><p class="d-url">A React app on Salesforce</p><p class="d-text">Multi-Framework. Salesforce hosts it, with permissions built in.</p></div>
+              <div class="d-card d-card-you"><p class="d-url">A widget</p><p class="d-text">Configure it once. It renders natively on each surface.</p></div>
+            </div>
+            <div class="d-col d-mid">
+              <p class="d-label">How it connects</p>
+              <svg class="d-arrow" viewBox="0 0 200 60" aria-hidden="true"><path d="M6 30 H178 M152 8 L186 30 L152 52"/></svg>
+              <div class="d-auth"><p>Headless Experience Layer</p><p class="d-text">Interprets the prompt, assembles widgets, renders the experience.</p></div>
+            </div>
+            <div class="d-col">
+              <p class="d-label">What the user sees</p>
+              <p class="d-prompt">&ldquo;Can you help me book a car?&rdquo;</p>
+              <div class="sf-set">
+                <figure class="sf sf-slack">
+                  <figcaption>Slack &middot; Block Kit</figcaption>
+                  <div class="sf-msg">
+                    <span class="sf-av" aria-hidden="true">A</span>
+                    <div class="sf-body">
+                      <p class="sf-who"><b>Agent</b> <span class="sf-app">APP</span> <span class="sf-time">9:41</span></p>
+                      <p class="sf-h">Book a car</p>
+                      <div class="sf-fields"><p><span>Class</span>Mid-size</p><p><span>Pickup</span>Friday, 9:00</p><p><span>Return</span>Sunday, 18:00</p><p><span>Price</span>Included</p></div>
+                      <div class="sf-btns"><span class="sf-btn sf-btn-p">Reserve</span><span class="sf-btn">Change dates</span></div>
+                    </div>
+                  </div>
+                </figure>
+                <figure class="sf sf-teams">
+                  <figcaption>Teams &middot; Adaptive Card</figcaption>
+                  <div class="tm-card">
+                    <p class="tm-t">Book a car</p>
+                    <p class="tm-s">Reserve a mid-size car for Friday.</p>
+                    <dl class="tm-facts"><dt>Class</dt><dd>Mid-size</dd><dt>Pickup</dt><dd>Friday, 9:00</dd><dt>Return</dt><dd>Sunday, 18:00</dd><dt>Price</dt><dd>Included</dd></dl>
+                    <div class="tm-actions"><span class="tm-btn tm-btn-p">Reserve</span><span class="tm-btn">Change dates</span></div>
+                  </div>
+                </figure>
+              </div>
+              <p class="mx-note">Same widget, rendered natively on each surface. Also on Claude and ChatGPT. Sample screens, not a real product.</p>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   </section>

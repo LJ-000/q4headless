@@ -46,37 +46,55 @@
     pathEl.appendChild(document.createTextNode('Start by asking: “' + s.ask + '” Then: ' + f.then));
   }
 
-  function wire(row) {
-    var group = row.getAttribute('data-sel');
-    var prefix = group === 'start' ? 'p-' : 'q-';
-    var panels = document.querySelector('[data-panels="' + group + '"]');
-    var tabs = Array.prototype.slice.call(row.querySelectorAll('[data-pick]'));
+  /* A group is one choice with one or more tab rows and one or more panel sets. The "start" choice drives
+     Step 1 and the 101 section, so picking in either place updates both. */
+  var GROUPS = {
+    start: { rows: ['start', 'start101'], panels: [['start', 'p-'], ['101', 'd-']] },
+    surface: { rows: ['surface'], panels: [['surface', 'q-']] },
+  };
 
-    function pick(key, focus) {
-      state[group] = key;
-      tabs.forEach(function (t) {
+  function pick(group, key, focusRow) {
+    var g = GROUPS[group];
+    state[group] = key;
+    g.rows.forEach(function (name) {
+      var row = document.querySelector('[data-sel="' + name + '"]');
+      if (!row) return;
+      Array.prototype.forEach.call(row.querySelectorAll('[data-pick]'), function (t) {
         var on = t.getAttribute('data-pick') === key;
         t.setAttribute('aria-selected', on ? 'true' : 'false');
         t.tabIndex = on ? 0 : -1;
-        if (on && focus) t.focus();
+        if (on && focusRow === name) t.focus();
       });
-      Array.prototype.forEach.call(panels.children, function (p) {
-        p.classList.toggle('is-off', p.id !== prefix + key);
+    });
+    g.panels.forEach(function (set) {
+      var box = document.querySelector('[data-panels="' + set[0] + '"]');
+      if (!box) return;
+      Array.prototype.forEach.call(box.children, function (p) {
+        if (p.classList.contains('sel-panel') || p.classList.contains('d-panel')) p.classList.toggle('is-off', p.id !== set[1] + key);
       });
-      renderPath();
-    }
+    });
+    renderPath();
+  }
 
+  function wire(row, group) {
+    var tabs = Array.prototype.slice.call(row.querySelectorAll('[data-pick]'));
+    var name = row.getAttribute('data-sel');
     tabs.forEach(function (t, i) {
-      t.addEventListener('click', function () { pick(t.getAttribute('data-pick'), false); });
+      t.addEventListener('click', function () { pick(group, t.getAttribute('data-pick'), null); });
       t.addEventListener('keydown', function (e) {
         var n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : null;
         if (n === null) return;
         e.preventDefault();
-        pick(tabs[(n + tabs.length) % tabs.length].getAttribute('data-pick'), true);
+        pick(group, tabs[(n + tabs.length) % tabs.length].getAttribute('data-pick'), name);
       });
     });
-    pick(state[group], false);
   }
 
-  Array.prototype.forEach.call(document.querySelectorAll('[data-sel]'), wire);
+  Object.keys(GROUPS).forEach(function (group) {
+    GROUPS[group].rows.forEach(function (name) {
+      var row = document.querySelector('[data-sel="' + name + '"]');
+      if (row) wire(row, group);
+    });
+    pick(group, state[group], null);
+  });
 })();
