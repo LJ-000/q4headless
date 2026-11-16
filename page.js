@@ -25,9 +25,9 @@
   root.classList.add('js');
 
   var STARTS = {
-    le: { name: 'Bring your MCP server', ask: 'Which tool are your customers calling today, and what do they get done with it?' },
-    tr: { name: 'Expose your app to agents', ask: 'What is the first thing a customer has asked an agent to do on their behalf?' },
-    cg: { name: 'Build a new experience', ask: 'Walk through your customer journey. At what point does someone need Salesforce data, or permission to take an action?' },
+    le: { name: 'Bring your MCP server', ask: 'What can an agent do with your MCP server today?' },
+    tr: { name: 'Build a new MCP server', ask: 'What should an external agent be able to do with your product?' },
+    cg: { name: 'Build a new experience', ask: 'Which customer journey are you building a new experience for?' },
   };
   var SURFACES = {
     sf: { name: 'in Salesforce', then: 'Register your MCP server with Agentforce, or package agent actions in the org.' },

@@ -1336,7 +1336,7 @@ html.ot-static .ot-hero { min-height: min(100vh, 900px); }
 
       <div class="sel-row" role="tablist" aria-label="Starting point" data-sel="start">
         <button class="sel-card" role="tab" type="button" id="t-le" aria-controls="p-le" data-pick="le"><span class="sel-name">Bring your MCP server</span><span class="sel-hear">&ldquo;We already have an MCP server.&rdquo;</span></button>
-        <button class="sel-card" role="tab" type="button" id="t-tr" aria-controls="p-tr" data-pick="tr"><span class="sel-name">Expose your app to agents</span><span class="sel-hear">&ldquo;We want external agents to use our app.&rdquo;</span></button>
+        <button class="sel-card" role="tab" type="button" id="t-tr" aria-controls="p-tr" data-pick="tr"><span class="sel-name">Build a new MCP server</span><span class="sel-hear">&ldquo;We want to expose functionalities to external agents.&rdquo;</span></button>
         <button class="sel-card" role="tab" type="button" id="t-cg" aria-controls="p-cg" data-pick="cg"><span class="sel-name">Build a new experience</span><span class="sel-hear">&ldquo;We&rsquo;re building a new experience in React.&rdquo;</span></button>
       </div>
 
@@ -1345,14 +1345,14 @@ html.ot-static .ot-hero { min-height: min(100vh, 900px); }
           <div class="sel-cols">
             <div>
               <h3>Start by asking yourself</h3>
-              <p class="sel-ask">Which tool are your customers calling today, and what do they get done with it?</p>
-              <p class="sel-eg"><b>For example.</b> If customers already use a provider lookup, bringing that lookup into Salesforce is a specific place to start.</p>
+              <p class="sel-ask">What can an agent do with your MCP server today?</p>
+              <p class="sel-eg"><b>For example.</b> Your server has a tool that customers use to check the status of a claim.</p>
             </div>
             <div>
               <h3>Questions to consider</h3>
               <ul class="sel-list">
                 <li>What counts as a headless solution for your product?</li>
-                <li>What did you build it on, and where is it hosted?</li>
+                <li>What did you build your MCP server on, and where is it hosted today?</li>
                 <li>What types of tools are you exposing?</li>
                 <li>What is your customer adoption like today?</li>
               </ul>
@@ -1368,8 +1368,8 @@ html.ot-static .ot-hero { min-height: min(100vh, 900px); }
           <div class="sel-cols">
             <div>
               <h3>Start by asking yourself</h3>
-              <p class="sel-ask">What is the first thing a customer has asked an agent to do on their behalf?</p>
-              <p class="sel-eg"><b>For example.</b> Wanting to be available in an external agent is one thing. Knowing a customer wants to review an agreement there is a use case you can validate.</p>
+              <p class="sel-ask">What should an external agent be able to do with your product?</p>
+              <p class="sel-eg"><b>For example.</b> Start with a read-only tool that exposes a custom object already in your managed package.</p>
             </div>
             <div>
               <h3>Questions to consider</h3>
@@ -1391,8 +1391,8 @@ html.ot-static .ot-hero { min-height: min(100vh, 900px); }
           <div class="sel-cols">
             <div>
               <h3>Start by asking yourself</h3>
-              <p class="sel-ask">Walk through your customer journey. At what point does someone need Salesforce data, or permission to take an action?</p>
-              <p class="sel-eg"><b>For example.</b> That is a natural opening for Multi-Framework, including for customers who want a better experience right in the browser.</p>
+              <p class="sel-ask">Which customer journey are you building a new experience for?</p>
+              <p class="sel-eg"><b>For example.</b> Your customers want a branded workspace with live Salesforce data. Your team builds it in React, and Salesforce hosts it with permissions built in.</p>
             </div>
             <div>
               <h3>Questions to consider</h3>
@@ -3970,9 +3970,9 @@ var GRADIENTS = {
   root.classList.add('js');
 
   var STARTS = {
-    le: { name: 'Bring your MCP server', ask: 'Which tool are your customers calling today, and what do they get done with it?' },
-    tr: { name: 'Expose your app to agents', ask: 'What is the first thing a customer has asked an agent to do on their behalf?' },
-    cg: { name: 'Build a new experience', ask: 'Walk through your customer journey. At what point does someone need Salesforce data, or permission to take an action?' },
+    le: { name: 'Bring your MCP server', ask: 'What can an agent do with your MCP server today?' },
+    tr: { name: 'Build a new MCP server', ask: 'What should an external agent be able to do with your product?' },
+    cg: { name: 'Build a new experience', ask: 'Which customer journey are you building a new experience for?' },
   };
   var SURFACES = {
     sf: { name: 'in Salesforce', then: 'Register your MCP server with Agentforce, or package agent actions in the org.' },
