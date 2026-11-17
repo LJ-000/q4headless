@@ -4,8 +4,20 @@ A partner-facing walkthrough for the Q4 headless surge. It is for **presenting l
 
 It pairs with a discovery deck: the guide shows partners their options, and the deck captures their answers.
 
-- **Guide (this repo):** the live artifact, or `dist/headless-partner-guide.html`
+- **Guide (this repo):** `dist/headless-partner-guide.html`, or the live artifact
 - **Discovery deck:** [Headless partner discovery](https://docs.google.com/presentation/d/1roEum5jsbe-uFk_tJz0In2yDLmSKsUeaS9yFqxkAVcI/edit) (Google Slides)
+
+## Get the guide
+
+Clone this repo and open the folder in Claude. Don't download single files or work from the GitHub web page.
+
+```bash
+git clone git@github.com:LJ-000/q4headless.git
+```
+
+Then open the `q4headless` folder in Claude and ask it to open the guide or help you prepare for a meeting. To open the page yourself, double-click `dist/headless-partner-guide.html`. It is one self-contained file and needs no server.
+
+**Need to edit or push changes?** You need collaborator access. Slack Laura to request it.
 
 ## Before the meeting
 
@@ -31,33 +43,10 @@ Work down the page in order. Each step has a matching slide in the deck.
 
 Slide 8 in the deck, Use Case Ideation, is not tied to one guide section. Use it after the Step 1 questions to work through the partner's first use case.
 
-### Tips
-
-- The starting-point tabs in Step 1 and in 101 stay in sync. Pick once and both update. The "Your path" summary under Step 2 echoes the choices.
-- Tabs work with the arrow keys as well as clicks.
-- Scrolling the opening plays an animation. If it distracts on a call, jump straight to Step 1 with the "Find your starting point" link in the opening.
-- With reduced motion turned on in the OS, or when printing, the page shows every panel stacked, so you can also print or export it to PDF as a leave-behind for your own notes.
-- Windows narrower than about 760 px get the stacked layout too.
-
-## Before you present: what to say and what to hold back
-
-- Keep it vague on OEM. Say only that a few select OEM partners can use approved objects. Don't go further.
-- Don't promise dates or status for anything marked "Check current status". Say you'll confirm.
-- The talk track, seller coaching and the list of unverified claims are in the Slack canvas "Headless partner guide: presenter talk track (internal)". They are not in the page or the deck.
-
 ## What's in the repo
 
 - `index.html`, `page.css`, `page.js`: the page source. Copy and layout live in `index.html`; the tab logic is in `page.js`.
 - `sfc/`, `assets/`, `manifest.json`: the design-stack runtime, fonts and images the page uses.
 - `checks/`: browser checks for the opening and the sections.
-- `dist/headless-partner-guide.html`: the single-file build. Open it in any browser, no server needed.
+- `dist/headless-partner-guide.html`: the single-file build. Open it in any browser.
 - `dist/headless-partner-guide.artifact.html`: the same page, prepared for publishing as a live artifact.
-
-## Editing and republishing
-
-1. Edit `index.html` (copy), `page.css` (look) or `page.js` (tabs).
-2. Rebuild the two `dist/` files so each is one self-contained file with CSS, JS, fonts and images inlined. The artifact version also adds `<style>:root { color-scheme: light; }</style> ` right after `<head>`.
-3. Update the live artifact with the artifact build.
-4. Commit and push.
-
-Keep the deck in step with any change to the questions, the three starting points or the build plan, since the two are meant to match.
